@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<UnityGameFramework>
+  <ResourceCollection>
+    <Resources>
+      <Resource Name="Atlas" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/DataTable/ai_tbaiactiondef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/ai_tbaigroupdef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/anim_tbanimdef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/anim_tbanimgroup" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/chapter_tbmainchapter" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/core_tbentitygrouptable" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/core_tbsoundgrouptable" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/core_tbuigrouptable" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/entity_tbhero" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/entity_tbmonster" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/item_tbitem" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/map_tbmapdata" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbaoedef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbbuffdef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbbulletdef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbskillaoedef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbskillbulletdef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbskilldef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/skill_tbtimelinedef" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/tblocalization" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/ui_tbgamemodule" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/DataTable/ui_tbreddot" FileSystem="DataTable" LoadType="4" Packed="False" />
+      <Resource Name="HotAssets/Entity/Core" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/Scene/Home" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/UI/Prefabs/Login" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/UI/Sprites/Login" LoadType="0" Packed="False" />
+      <Resource Name="HotfixDlls" LoadType="0" Packed="False" />
+      <Resource Name="Setting" LoadType="0" Packed="False" />
+    </Resources>
+    <Assets>
+      <Asset Guid="034d0bc93db4416428b1ada778762aff" ResourceName="HotAssets/DataTable/ui_tbreddot" />
+      <Asset Guid="0376a4444098d1740857761d851de7be" ResourceName="HotAssets/Scene/Home" />
+      <Asset Guid="11ca7aa1be6b45c41b6c9babeb39cbce" ResourceName="HotAssets/Entity/Core" />
+      <Asset Guid="1323a5e85da883d40852232b1bf1b724" ResourceName="HotAssets/DataTable/skill_tbtimelinedef" />
+      <Asset Guid="147b9a99fa4b3514390d8686c4b16afb" ResourceName="HotAssets/DataTable/ai_tbaigroupdef" />
+      <Asset Guid="1540912af87663a4493699abdcd088d1" ResourceName="HotAssets/DataTable/skill_tbbuffdef" />
+      <Asset Guid="18961beaf4872dc4e8c936e0f6d75d60" ResourceName="HotAssets/DataTable/core_tbuigrouptable" />
+      <Asset Guid="189a34d65610b2c4fb57068005d985d1" ResourceName="HotAssets/DataTable/anim_tbanimdef" />
+      <Asset Guid="1b939be2f1784b141845be568ee1557d" ResourceName="HotAssets/UI/Sprites/Login" />
+      <Asset Guid="1d41bf82825ea774aa43572c711e96ad" ResourceName="HotAssets/DataTable/map_tbmapdata" />
+      <Asset Guid="45d37d27c6bf1724c9ad5a3878592e47" ResourceName="Atlas" />
+      <Asset Guid="4a2de196c1dca0940b6fa897988e5090" ResourceName="HotAssets/UI/Sprites/Login" />
+      <Asset Guid="6be38d7fc85a442489bc513d73291793" ResourceName="HotfixDlls" />
+      <Asset Guid="78c69fa888fafe545b6bb179b122438b" ResourceName="HotAssets/DataTable/skill_tbskillbulletdef" />
+      <Asset Guid="7b8b206d8bc37e149b97f5433fab029f" ResourceName="HotfixDlls" />
+      <Asset Guid="81ab176a3020d4148b7aa74e02fac32f" ResourceName="HotAssets/DataTable/entity_tbhero" />
+      <Asset Guid="85368ddb97eaf1e4b99d9d4dccb6f93e" ResourceName="HotAssets/DataTable/skill_tbbulletdef" />
+      <Asset Guid="a93cb1859034a804c85eb634bca06f75" ResourceName="Setting" />
+      <Asset Guid="ad17fced77eb2a748b4c4329271885fc" ResourceName="HotAssets/UI/Prefabs/Login" />
+      <Asset Guid="adb741c687f17104996262f9515a4cd1" ResourceName="HotAssets/DataTable/item_tbitem" />
+      <Asset Guid="c50f2903be2eb0d4885f2cbc8f28fb7e" ResourceName="HotAssets/DataTable/skill_tbskilldef" />
+      <Asset Guid="ca446ffacd56b25469a464d98c1709a7" ResourceName="HotAssets/DataTable/ai_tbaiactiondef" />
+      <Asset Guid="cdff9b3c9eb6b12478278e013967ba42" ResourceName="HotAssets/DataTable/skill_tbskillaoedef" />
+      <Asset Guid="dd5df63ca47a87043a8f72b1e0027c70" ResourceName="HotAssets/DataTable/anim_tbanimgroup" />
+      <Asset Guid="e0e96fb9fc0d891408eabbc36da58e42" ResourceName="Atlas" />
+      <Asset Guid="e39d5a9f63c9b834f8e338b04422f842" ResourceName="HotAssets/DataTable/chapter_tbmainchapter" />
+      <Asset Guid="ed1d00af3c63af64eb3264bbac26ff3d" ResourceName="HotAssets/DataTable/tblocalization" />
+      <Asset Guid="ed8dd17d6f21a84459b4f37082db8952" ResourceName="HotAssets/DataTable/skill_tbaoedef" />
+      <Asset Guid="eddc6723c2d5a2c4a9607a5667694861" ResourceName="HotAssets/DataTable/core_tbsoundgrouptable" />
+      <Asset Guid="eea39d01f65faa346835b2c71d9009cb" ResourceName="HotAssets/DataTable/entity_tbmonster" />
+      <Asset Guid="f2903f426b62f854f9e265b839325875" ResourceName="HotAssets/DataTable/ui_tbgamemodule" />
+      <Asset Guid="f5ca4fb1fb5b0cd46ae1237e4943a338" ResourceName="HotAssets/DataTable/core_tbentitygrouptable" />
+    </Assets>
+  </ResourceCollection>
+</UnityGameFramework>

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Bash(dir \"E:\\\\TuanJie\\\\Project\\\\AIProject\\\\Config\\\\DataTables\\\\Datas\")",
+      "Read(//e/TuanJie/Project/AIProject/Config/**)",
+      "Bash(python3 -c \"import openpyxl; wb=openpyxl.load_workbook\\('DataTables/Datas/__beans__.xlsx'\\); ws=wb.active; [print\\([str\\(c.value\\) for c in r]\\) for r in ws.iter_rows\\(max_row=30\\)]\")",
+      "Bash(python -c \"import openpyxl; wb=openpyxl.load_workbook\\('DataTables/Datas/__beans__.xlsx'\\); ws=wb.active; [print\\([str\\(c.value\\) for c in r]\\) for r in ws.iter_rows\\(max_row=30\\)]\")",
+      "Bash(python:*)",
+      "Bash(cmd /c gen.bat)",
+      "Bash(dotnet LubanDll/Luban.dll -t client -c cs-bin -d bin --conf DataTables/luban.conf -x outputCodeDir=../Client/Assets/HotAssets/Scripts/DataTable -x outputDataDir=../Client/Assets/HotAssets/DataTable)",
+      "Bash(\"LubanDll/Luban.exe\" -t client -c cs-bin -d bin --conf DataTables/luban.conf -x outputCodeDir=../Client/Assets/HotAssets/Scripts/DataTable -x outputDataDir=../Client/Assets/HotAssets/DataTable)",
+      "Bash(xargs grep:*)"
+    ]
+  }
+}

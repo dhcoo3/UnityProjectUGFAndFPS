@@ -1,0 +1,21 @@
+{
+    "name": "Builtin",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "UnityGameFramework.Runtime",
+        "ZString",
+        "GameFramework",
+        "UniTask",
+        "HybridCLR.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
