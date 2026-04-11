@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9a3d90fcca364418d7c1888cdf81db, type: 3}
+  m_Name: TjAnalyticsAppConfig
+  m_EditorClassIdentifier: 
+  projectId: bf95c0b8-70a5-46a2-9612-236a872e9820
+  appId: e1576065c7ed4f0e99c27bb47b502bb7

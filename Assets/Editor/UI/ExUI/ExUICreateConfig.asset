@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ca484624fc9a6c479f854bf978ce8ba, type: 3}
+  m_Name: ExUICreateConfig
+  m_EditorClassIdentifier: 
+  ButtonOnClickId: 0
+  ButtonTransition: 3
+  ButtonAnimatorController: {fileID: 9100000, guid: 2566d1e752561ae4cb3fcc5fa870faca, type: 2}
+  ButtonDefaultImage2: {fileID: 0}
+  DefaultFont: {fileID: 11400000, guid: 11785bed67c7d794d87d055f4a40a2e1, type: 2}
+  InputFieldDefaultBgImage: {fileID: 0}
+  SliderDefaultBgImage: {fileID: 0}
+  SliderDefaultBgImage2: {fileID: 0}
+  ScriptIcon: {fileID: 2800000, guid: dd4e1ef573635fc4a9839c6eb363dc7a, type: 3}
