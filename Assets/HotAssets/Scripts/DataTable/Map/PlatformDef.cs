@@ -61,11 +61,11 @@ public sealed partial class PlatformDef : Luban.BeanBase
     /// </summary>
     public readonly Fix Speed;
     /// <summary>
-    /// 宽度
+    /// 宽度(预制体宽/2)
     /// </summary>
     public readonly Fix HalfWidth;
     /// <summary>
-    /// 高度
+    /// 高度(预制体高/2)
     /// </summary>
     public readonly Fix HalfHeight;
     /// <summary>

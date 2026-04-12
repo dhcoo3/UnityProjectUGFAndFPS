@@ -121,7 +121,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             
             if (skillObj == null || skillObj.Cooldown > 0)
             {
-                Debug.LogWarning($"技能GCD中 {skillObj.Cooldown}");
+                Debug.LogWarning($"技能GCD中 {skillObj.Cooldown} {id}");
                 return false;
             }
             
@@ -147,7 +147,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             }
             else
             {
-                Debug.LogWarning("不满足释放技能条件");
+                Debug.LogWarning($"不满足释放技能条件 {id}");
             }
             
             skillObj.Cooldown = 0.1f;   //无论成功与否，都会进入gcd

@@ -8,6 +8,6 @@ dotnet %GEN_CLIENT% ^
     -c cs-bin ^
     -d bin ^
     --conf %CONF_ROOT%\luban.conf ^
-    -x outputCodeDir=..\Client\Assets\HotAssets\Scripts\DataTable ^
-    -x outputDataDir=..\Client\Assets\HotAssets\DataTable
+    -x outputCodeDir=..\Assets\HotAssets\Scripts\DataTable ^
+    -x outputDataDir=..\Assets\HotAssets\DataTable
 pause

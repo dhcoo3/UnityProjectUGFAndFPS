@@ -65,17 +65,29 @@ namespace HotAssets.Scripts.GamePlay.Logic.MonsterSpawner
 
         public override void LogicUpdate(fix deltaTime)
         {
-            RoleUnit mainRole = _unitProxy.MainRole;
-            if (mainRole == null) return;
-
-            fix playerX = mainRole.RoleBehaviour.Position.x;
+            // 检测任意玩家是否到达触发点（多人游戏支持）
+            List<RoleUnit> allPlayers = _unitProxy.GetAllPlayerRoles();
+            if (allPlayers == null || allPlayers.Count == 0) return;
 
             for (int i = 0; i < _spawnerStates.Count; i++)
             {
                 SpawnerState state = _spawnerStates[i];
                 if (state.Triggered) continue;
 
-                if (playerX > MathUtils.Convert(state.Config.TriggerX))
+                fix triggerX = MathUtils.Convert(state.Config.TriggerX);
+
+                // 只要有任意一个玩家到达触发点，就生成怪物
+                bool anyPlayerTriggered = false;
+                for (int j = 0; j < allPlayers.Count; j++)
+                {
+                    if (allPlayers[j] != null && allPlayers[j].RoleBehaviour.Position.x > triggerX)
+                    {
+                        anyPlayerTriggered = true;
+                        break;
+                    }
+                }
+
+                if (anyPlayerTriggered)
                 {
                     state.Triggered = true;
                     SpawnMonsters(state);

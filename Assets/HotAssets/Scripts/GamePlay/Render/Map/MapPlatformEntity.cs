@@ -84,9 +84,9 @@ namespace HotAssets.Scripts.GamePlay.Render.Map
             float hw = _mapPlatformUnit.HalfWidth;
             float hh = _mapPlatformUnit.HalfHeight;
 
-            // 碰撞矩形（黄色半透明）
+            // 碰撞矩形（黄色半透明），DrawWireCube 第二参数为全尺寸，需乘2
             Gizmos.color = new Color(1f, 1f, 0f, 0.9f);
-            Gizmos.DrawWireCube(new Vector3(cx, cy, 0f), new Vector3(hw , hh, 0.05f));
+            Gizmos.DrawWireCube(new Vector3(cx, cy, 0f), new Vector3(hw * 2f, hh * 2f, 0.05f));
 
             // 移动路径（青色线）
             Vector3 startV = new Vector3(

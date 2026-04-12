@@ -25,6 +25,11 @@ namespace HotAssets.Scripts.GamePlay.Render.Camera
 
         private Vector3 _targetPosition = new Vector3(0,0,-50);
 
+        /// <summary>缓动基础系数，控制整体跟随灵敏度</summary>
+        private const float EaseBaseSpeed = 3f;
+        /// <summary>距离放大系数，距离越远速度倍增越高</summary>
+        private const float EaseDistanceScale = 0.8f;
+
         private MapProxy _mapProxy;
 
         public override void Initialize()
@@ -83,7 +88,18 @@ namespace HotAssets.Scripts.GamePlay.Render.Camera
                     : (border.yMin + border.yMax) * 0.5f;
             }
 
-            FightCamera.transform.position = _targetPosition;
+            // 缓动跟随：距离越远，速度越快
+            Vector3 currentPos = FightCamera.transform.position;
+            float dx = _targetPosition.x - currentPos.x;
+            float dy = _targetPosition.y - currentPos.y;
+            float distance = Mathf.Sqrt(dx * dx + dy * dy);
+            // 动态速度 = 基础系数 + 距离放大，距离越远追得越快
+            float speed = EaseBaseSpeed + distance * EaseDistanceScale;
+            float dt = deltaTime;
+            float t = 1f - Mathf.Exp(-speed * dt);
+            currentPos.x = Mathf.Lerp(currentPos.x, _targetPosition.x, t);
+            currentPos.y = Mathf.Lerp(currentPos.y, _targetPosition.y, t);
+            FightCamera.transform.position = currentPos;
 
             base.LogicUpdate(deltaTime);
         }

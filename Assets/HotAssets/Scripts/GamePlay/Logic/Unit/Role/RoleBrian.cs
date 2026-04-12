@@ -33,6 +33,9 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
         // 竖向速度（重力 + 跳跃）
         private fix _verticalVelocity = fix.Zero;
 
+        /// <summary>当前竖向速度，供 MapProxy 判断角色是否正在起跳</summary>
+        public fix VerticalVelocity => _verticalVelocity;
+
         private fix _gravity = -20f;
         private fix _jumpForce = 10f;
         
@@ -155,17 +158,26 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             }
             
             bool tryRun = RoleState.canMove && MoveOrder != fix3.zero;
-            
+
             bool wishToMove = MoveOrder != fix3.zero;
             if (wishToMove)
             {
                 _wishToMoveDegree = fixMath.atan2(MoveOrder.x, MoveOrder.y) * 180 / fixMath.PI;
             }
-               
+
             CalcMove(deltaTime);
             CalcRotation();
-            CalcAnimation(tryRun);
+            // CalcAnimation 已移至 RoleUnit.LogicUpdate 中，在 UnitMove 结算后调用
             //MoveOrder = fix3.zero;
+        }
+
+        /// <summary>
+        /// 动画更新，在 UnitMove 结算完成后由 RoleUnit 调用，确保 IsGrounded 状态已稳定。
+        /// </summary>
+        public void UpdateAnimation()
+        {
+            bool tryRun = RoleState.canMove && MoveOrder != fix3.zero;
+            CalcAnimation(tryRun);
         }
         
         ///<summary>
@@ -201,10 +213,13 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
                 MoveOrder = fix3.zero;
             }
 
-            // 应用重力
-            _verticalVelocity += _gravity * timePassed;
-
             UnitMove unitMove = _roleUnit.RoleBehaviour.UnitMove;
+
+            // 应用重力：已落地（含移动平台）时不累积，避免平台上速度无限增大导致穿透
+            if (!_roleUnit.RoleState.IsGrounded)
+            {
+                _verticalVelocity += _gravity * timePassed;
+            }
 
             // ── 贴墙下滑检测 ────────────────────────────────────────
             // 条件：空中 + 上一帧撞墙 + 正在下落 + 玩家持续向墙方向施压
@@ -237,7 +252,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             // 原因：velocity.y=0 时 GetNearestHorizontalBlock(dir=0) 直接返回原位，
             // yBlocked 恒为 false，导致 IsGrounded 每帧在 true/false 间震荡，
             // 动画疯狂切换 Run/Fall。保留小探测速度让 UnitMove 每帧都能探到地面。
-            if (unitMove.IsGrounded && _verticalVelocity < fix.Zero)
+            // 地形落地 或 上帧站在移动平台上，均重置竖向速度为探测值
+            if ((unitMove.IsGrounded || _roleUnit.RoleState.IsGrounded) && _verticalVelocity < fix.Zero)
             {
                 _verticalVelocity = (fix)(-0.5f);
                 _roleUnit.RoleState.IsOnWall = false;
@@ -338,10 +354,15 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
         {
             UnitMove unitMove = _roleUnit.RoleBehaviour.UnitMove;
 
-            if (unitMove.IsGrounded)
+            // 同时检查地形落地和平台落地状态
+            bool isActuallyGrounded = unitMove.IsGrounded || _roleUnit.RoleState.IsGrounded;
+
+            if (isActuallyGrounded)
             {
                 // 普通跳跃
                 _verticalVelocity = _jumpForce;
+                // 跳跃时立即清除落地状态，防止下一帧的动画判定错误
+                _roleUnit.RoleState.IsGrounded = false;
             }
             else if (_roleUnit.RoleState.IsOnWall)
             {
@@ -374,10 +395,15 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
         /// <summary>
         /// 角色落在移动平台上时调用：将竖向速度重置为地面探测值，清零跳跃计数。
         /// 由 PlatformProxy 在检测到角色站在平台上时调用，不应从其他地方调用。
+        /// 只在下落时重置速度，跳跃时保留速度（允许离开平台）
         /// </summary>
         public void OnStandOnPlatform()
         {
-            _verticalVelocity = (fix)(-0.5f);
+            // 只有在下落时才重置为探测值，跳跃时保持原有速度
+            if (_verticalVelocity < fix.Zero)
+            {
+                _verticalVelocity = (fix)(-0.5f);
+            }
             _roleUnit.RoleState.JumpCount = 0;
         }
 

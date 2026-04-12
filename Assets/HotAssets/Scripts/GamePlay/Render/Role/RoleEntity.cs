@@ -19,16 +19,22 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
     public class RoleEntity:EntityRender
     {
         public int RoleId = 0;
-        
+
         private RoleUnit _roleUnit;
-        
+
         private RoleBehaviour _roleBehaviour;
-        
+
         private RoleData _roleData;
-        
+
         private UnitAnim _unitAnim;
 
         private Vector3 _tmpVector3 = Vector3.zero;
+
+        /// <summary>
+        /// 标准的BodyRadius值（米），用于计算渲染偏移
+        /// 当实际BodyRadius与标准值不同时，自动调整渲染位置以避免预制件穿透地面
+        /// </summary>
+        private float STANDARD_BODY_RADIUS = fix.One;
         public UnitAnim RoleUnitAnim
         {
             get
@@ -97,11 +103,16 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         {
             //将逻辑层坐标同步到渲染层
             if(_roleUnit == null) return;
-            
+
             _tmpVector3.x =  _roleUnit.Behaviour.Position.x;
             _tmpVector3.y =  _roleUnit.Behaviour.Position.y;
             _tmpVector3.z =  _roleUnit.Behaviour.Position.z;
-            
+
+            // 修复BodyRadius改变导致的渲染偏移
+            // 当BodyRadius与标准值不同时，自动调整Y位置，避免预制件穿透地面
+            float bodyRadiusOffset = STANDARD_BODY_RADIUS - _roleUnit.BodyRadius;
+            _tmpVector3.y += bodyRadiusOffset;
+
             //更新显示位置
             transform.position = _tmpVector3;
             
@@ -125,6 +136,34 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         {
             _roleUnit = null;
             base.OnRecycle();
+        }
+
+        /// <summary>
+        /// 编辑器 Gizmos 可视化：绿色圆=碰撞范围（BodyRadius），红色圆=身体范围（HitRadius）
+        /// 仅运行时有效（_roleUnit 需已初始化）
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            if (!Application.isPlaying) return;
+            if (_roleUnit == null) return;
+
+            float px = _roleUnit.Behaviour.Position.x;
+            float py = _roleUnit.Behaviour.Position.y;
+            float bodyRadius = _roleUnit.BodyRadius;
+            float hitRadius = _roleUnit.Data.Prop.HitRadius;
+
+            // 碰撞范围（绿色圆，用于移动碰撞和平台站立检测）
+            Gizmos.color = new Color(0f, 1f, 0f, 0.8f);
+            Gizmos.DrawWireSphere(new Vector3(px, py, 0f), bodyRadius);
+
+            // 身体范围（红色圆，用于子弹命中判定）
+            Gizmos.color = new Color(1f, 0f, 0f, 0.8f);
+            Gizmos.DrawWireSphere(new Vector3(px, py, 0f), hitRadius);
+
+            // 圆心标记（黄色小球）
+            Gizmos.color = new Color(1f, 1f, 0f, 1f);
+            float markerSize = Mathf.Max(bodyRadius, hitRadius) * 0.1f;
+            Gizmos.DrawSphere(new Vector3(px, py, 0f), markerSize);
         }
 
         /// <summary>

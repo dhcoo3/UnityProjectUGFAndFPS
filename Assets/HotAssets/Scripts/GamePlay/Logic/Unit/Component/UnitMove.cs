@@ -74,9 +74,9 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Component
             if (IsHitWall)
                 IsHitWallOnRight = _velocity.x > fix.Zero;
 
-            // 同步落地状态到 RoleState
+            // 同步落地状态到 RoleState：使用 OR 合并，不覆盖平台系统（MapProxy）已写入的 true
             if (_unit is RoleUnit roleUnit)
-                roleUnit.RoleState.IsGrounded = IsGrounded;
+                roleUnit.RoleState.IsGrounded = roleUnit.RoleState.IsGrounded || IsGrounded;
 
             if (_unit.SmoothMove == false && mapTargetPosInfo.obstacle){
                 _hitObstacle = true;

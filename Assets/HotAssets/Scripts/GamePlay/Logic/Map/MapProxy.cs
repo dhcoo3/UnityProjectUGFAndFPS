@@ -129,7 +129,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         // ── 平台每帧逻辑 ─────────────────────────────────────────────────────
         /// <summary>
         /// 推进所有平台位置，并将站在平台上的角色随之携带移动。
-        /// 在 UnitProxy（角色物理结算）之后执行，可安全覆盖 IsGrounded 状态。
+        /// 在 UnitProxy（角色物理结算）之前执行，确保 IsGrounded 状态在 CalcMove 读取前已更新。
         /// </summary>
         private void UpdatePlatforms(fix deltaTime)
         {
@@ -145,6 +145,10 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                 RoleUnit roleUnit = kvp.Value as RoleUnit;
                 if (roleUnit == null || roleUnit.IsDeath()) continue;
 
+                // 帧首重置：IsGrounded 由本帧各系统重新写入
+                // MapProxy（平台）在此之后写，UnitMove（地形）在 UnitProxy 中用 OR 追加，不会覆盖
+                roleUnit.RoleState.IsGrounded = false;
+
                 fix3 rPos = roleUnit.Behaviour.Position;
                 fix bodyRadius = roleUnit.BodyRadius;
 
@@ -154,13 +158,22 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                     if (!mapPlatform.IsStandingOn(rPos, bodyRadius)) continue;
 
                     fix3 delta = mapPlatform.GetDeltaThisFrame();
+
+                    // 角色向上跳跃时（竖向速度 > 0），只携带水平位移，不强制吸附到平台表面，
+                    // 避免起跳瞬间被拉回导致高度无变化
+                    bool jumping = roleUnit.RoleBrian.VerticalVelocity > fix.Zero;
                     roleUnit.Behaviour.Position = new fix3(
                         rPos.x + delta.x,
-                        mapPlatform.SurfaceY + roleUnit.BodyRadius, // 圆心 = 平台上表面 + 角色半径，与静态地形一致
+                        jumping ? rPos.y + delta.y : mapPlatform.SurfaceY + roleUnit.BodyRadius,
                         rPos.z + delta.z
                     );
-                    roleUnit.RoleState.IsGrounded = true;
-                    roleUnit.RoleBrian.OnStandOnPlatform();
+
+                    if (!jumping)
+                    {
+                        // 仅落地/站立时才写入 IsGrounded 和重置跳跃状态
+                        roleUnit.RoleState.IsGrounded = true;
+                        roleUnit.RoleBrian.OnStandOnPlatform();
+                    }
                     break; // 每角色同一帧只处理一块平台
                 }
             }

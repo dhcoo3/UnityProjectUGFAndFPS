@@ -269,6 +269,22 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
             }
         }
 
+        /// <summary>
+        /// 获取所有玩家角色列表（用于多人游戏）
+        /// </summary>
+        public List<RoleUnit> GetAllPlayerRoles()
+        {
+            List<RoleUnit> allPlayers = new List<RoleUnit>();
+            foreach (var kvp in PlayerRole)
+            {
+                if (kvp.Value != null)
+                {
+                    allPlayers.Add(kvp.Value);
+                }
+            }
+            return allPlayers;
+        }
+
         public void OperatorMainRole(InputObj inputObj)
         {
             if (PlayerRole.TryGetValue(inputObj.PlayerId, out RoleUnit playerUnit))

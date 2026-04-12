@@ -1,4 +1,5 @@
 {
+  "model": "claude-sonnet-4-6",
   "permissions": {
     "allow": [
       "mcp__ide__getDiagnostics",
@@ -10,7 +11,16 @@
       "Bash(cmd /c gen.bat)",
       "Bash(dotnet LubanDll/Luban.dll -t client -c cs-bin -d bin --conf DataTables/luban.conf -x outputCodeDir=../Client/Assets/HotAssets/Scripts/DataTable -x outputDataDir=../Client/Assets/HotAssets/DataTable)",
       "Bash(\"LubanDll/Luban.exe\" -t client -c cs-bin -d bin --conf DataTables/luban.conf -x outputCodeDir=../Client/Assets/HotAssets/Scripts/DataTable -x outputDataDir=../Client/Assets/HotAssets/DataTable)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(xargs ls:*)",
+      "Bash(python3 -c \"import openpyxl; print\\('openpyxl available'\\)\")",
+      "Bash(python3 -c \"import pandas; print\\('pandas available'\\)\")",
+      "Bash(cd /tmp)",
+      "Bash(python3)",
+      "Bash(unzip -q \"E:/TuanJie/Project/AIProject/Config/DataTables/Datas/Map/#MapData.xlsx\" -d mapdata_extract)",
+      "Bash(rm -rf platformdef_extract)",
+      "Bash(unzip -q \"E:/TuanJie/Project/AIProject/Config/DataTables/Datas/Map/#PlatformDef.xlsx\" -d platformdef_extract)",
+      "Bash(python3 -c ':*)"
     ]
   }
 }
