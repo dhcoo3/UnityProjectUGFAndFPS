@@ -1,0 +1,6 @@
+[submodule "Tools/unity-mcp-plugin"]
+	path = Tools/unity-mcp-plugin
+	url = https://github.com/AnkleBreaker-Studio/unity-mcp-plugin.git
+[submodule "Tools/unity-mcp-server"]
+	path = Tools/unity-mcp-server
+	url = https://github.com/AnkleBreaker-Studio/unity-mcp-server.git

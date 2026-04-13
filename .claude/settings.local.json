@@ -1,5 +1,7 @@
 {
-  "model": "claude-sonnet-4-6",
+  "env": {
+    "UNITY_BRIDGE_PORT": "7890"
+  },
   "permissions": {
     "allow": [
       "mcp__ide__getDiagnostics",
@@ -20,7 +22,24 @@
       "Bash(unzip -q \"E:/TuanJie/Project/AIProject/Config/DataTables/Datas/Map/#MapData.xlsx\" -d mapdata_extract)",
       "Bash(rm -rf platformdef_extract)",
       "Bash(unzip -q \"E:/TuanJie/Project/AIProject/Config/DataTables/Datas/Map/#PlatformDef.xlsx\" -d platformdef_extract)",
-      "Bash(python3 -c ':*)"
+      "Bash(python3 -c ':*)",
+      "Bash(git clone:*)",
+      "Bash(npm install:*)",
+      "Skill(update-config)",
+      "Bash(curl:*)",
+      "Bash(git add:*)"
     ]
-  }
+  },
+  "model": "claude-haiku-4-5-20251001",
+  "allowedMcpServers": [
+    {
+      "serverName": "unity"
+    },
+    {
+      "serverCommand": [
+        "node",
+        "E:/TuanJie/UnityProjectUGFAndFPS/Tools/unity-mcp-server/src/index.js"
+      ]
+    }
+  ]
 }

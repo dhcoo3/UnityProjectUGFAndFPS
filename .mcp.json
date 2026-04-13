@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "unity": {
+      "command": "node",
+      "args": [
+        "E:\\TuanJie\\UnityProjectUGFAndFPS\\Tools\\unity-mcp-server\\src\\index.js"
+      ],
+      "env": {
+        "UNITY_BRIDGE_PORT": "7890",
+        "UNITY_BRIDGE_HOST": "127.0.0.1"
+      }
+    }
+  }
+}
