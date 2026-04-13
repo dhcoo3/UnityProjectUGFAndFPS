@@ -5,6 +5,7 @@
   "permissions": {
     "allow": [
       "mcp__ide__getDiagnostics",
+      "Unity_*",
       "Bash(dir \"E:\\\\TuanJie\\\\Project\\\\AIProject\\\\Config\\\\DataTables\\\\Datas\")",
       "Read(//e/TuanJie/Project/AIProject/Config/**)",
       "Bash(python3 -c \"import openpyxl; wb=openpyxl.load_workbook\\('DataTables/Datas/__beans__.xlsx'\\); ws=wb.active; [print\\([str\\(c.value\\) for c in r]\\) for r in ws.iter_rows\\(max_row=30\\)]\")",
@@ -27,10 +28,20 @@
       "Bash(npm install:*)",
       "Skill(update-config)",
       "Bash(curl:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(rm -rf Tools/unity-mcp-plugin/.git Tools/unity-mcp-server/.git)",
+      "Bash(git submodule:*)",
+      "Bash(git commit:*)",
+      "Bash(grep:*)",
+      "Bash(xargs wc:*)"
     ]
   },
   "model": "claude-haiku-4-5-20251001",
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "unity"
+  ],
   "allowedMcpServers": [
     {
       "serverName": "unity"
