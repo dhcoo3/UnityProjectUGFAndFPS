@@ -38,6 +38,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Fight
         
         public void SetSceneProgress(float currentProgress)
         {
+            if(_sceneProgress >= 1) return;
             _sceneProgress = currentProgress;
             CheckLoadFinished();
             if (_sceneProgress >= 1)

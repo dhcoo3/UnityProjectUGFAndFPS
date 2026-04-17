@@ -102,9 +102,9 @@ namespace HotAssets.Scripts.GamePlay.Render.Map
         {
             _loadSceneOver = true;
             _fightLoadingProxy.SetSceneProgress(1);
-            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
-            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
-            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
+            EventHelper.UnsubscribeCommon(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
+            EventHelper.UnsubscribeCommon(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
+            EventHelper.UnsubscribeCommon(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
             AppEntry.Sound.PlayBGM(_mapProxy.CurMapData.Music);
         }
         
