@@ -1,7 +1,7 @@
-﻿using Builtin.Scripts.Game;
+using Builtin.Scripts.Game;
 using cfg.Fight;
 using cfg.UI;
-using HotAssets.Scripts.Common.Event;
+using GameFramework.Event;
 using HotAssets.Scripts.Extension;
 using HotAssets.Scripts.GamePlay.Logic.Unit.Role;
 using HotAssets.Scripts.UI.Core;
@@ -17,13 +17,17 @@ namespace HotAssets.Scripts.UI.Module.FightShare
     {
         public override void RegisterEvent()
         {
-            Subscribe(FightShareConst.Event.ECreateRole,ECreateRoleHandler);
+            EventHelper.Subscribe(FightCreateRoleEventArgs.EventId, ECreateRoleHandler);
             base.RegisterEvent();
         }
 
-        private void ECreateRoleHandler(object sender, GameEvent e)
+        /// <summary>
+        /// 响应角色创建事件。
+        /// </summary>
+        private void ECreateRoleHandler(object sender, GameEventArgs e)
         {
-            RoleUnit roleData = e.GetParam1<RoleUnit>();
+            FightCreateRoleEventArgs args = (FightCreateRoleEventArgs)e;
+            RoleUnit roleData = args.RoleUnit;
             FightShareModel.Instance.AddNewRole(roleData);
         }
 

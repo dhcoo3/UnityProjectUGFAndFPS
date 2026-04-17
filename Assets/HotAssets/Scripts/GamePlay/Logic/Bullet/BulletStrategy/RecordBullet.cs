@@ -18,14 +18,15 @@ namespace HotAssets.Scripts.GamePlay.Logic.Bullet.BulletStrategy
                 if (bulletUnit.Data.caster == null) return;
                 if (bulletUnit.Data.caster is RoleUnit roleUnit)
                 {
-                   // List<BuffObj> bos = roleUnit.Data.GetBuffById("TeleportBulletPassive", new List<IUnit>(){roleUnit});
-                    List<BuffObj> bos = roleUnit.Data.GetBuffById(1, new List<IUnit>(){roleUnit});
-                    if (bos.Count <= 0){
+                    if (!roleUnit.Data.TryGetBuffById(1, out BuffObj buffObj, roleUnit))
+                    {
                         /*roleUnit.AddBuff(new AddBuffInfo(
                             DesingerTables.Buff.data["TeleportBulletPassive"], bs.caster, bs.caster, 1, 10, true, true, new Dictionary<string, object>(){{"firedBullet", bullet}}
                         ));*/
-                    }else{
-                        bos[0].buffParam["firedBullet"] = bullet;
+                    }
+                    else
+                    {
+                        buffObj.buffParam["firedBullet"] = bullet;
                     }
                 }
             }

@@ -1,8 +1,8 @@
 ﻿using System;
 using Builtin.Scripts.Extension;
 using Builtin.Scripts.Game;
+using GameFramework.Event;
 using HotAssets.Scripts.Common;
-using HotAssets.Scripts.Common.Event;
 using HotAssets.Scripts.Extension;
 using HotAssets.Scripts.GamePlay.Logic.Unit.Role;
 using HotAssets.Scripts.UI.Tool.Component;
@@ -31,9 +31,9 @@ namespace HotAssets.Scripts.UI.Module.FightShare
         
         protected override void RegisterEvent()
         {
-            Subscribe(FightShareConst.Event.EUpdatePos,EUpdatePosHandler);
-            Subscribe(FightShareConst.Event.EUpdateHp,EUpdateHpHandler);
-            Subscribe(FightShareConst.Event.ERoleDie,ERoleDieHandler);
+            EventHelper.Subscribe(FightUpdatePosEventArgs.EventId, EUpdatePosHandler);
+            EventHelper.Subscribe(FightUpdateHpEventArgs.EventId, EUpdateHpHandler);
+            EventHelper.Subscribe(FightRoleDieEventArgs.EventId, ERoleDieHandler);
         }
 
         protected override void OnInit(object userData)
@@ -65,15 +65,19 @@ namespace HotAssets.Scripts.UI.Module.FightShare
                     RoleHudPrefab = asset;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Log.Warning("加载RoleHud失败");
             }
         }
         
-        private void EUpdateHpHandler(object sender, GameEvent e)
+        /// <summary>
+        /// 响应血量刷新事件。
+        /// </summary>
+        private void EUpdateHpHandler(object sender, GameEventArgs e)
         {
-            RoleUnit roleData = e.GetParam1<RoleUnit>();
+            FightUpdateHpEventArgs args = (FightUpdateHpEventArgs)e;
+            RoleUnit roleData = args.RoleUnit;
             if (_fighShareModel.FightUiRoles.TryGetValue(roleData.RoleId, out FightUIRole fightUIRole))
             {
                 if (fightUIRole.Hud == null)
@@ -86,10 +90,14 @@ namespace HotAssets.Scripts.UI.Module.FightShare
             }
         }
 
-        private void EUpdatePosHandler(object sender, GameEvent e)
+        /// <summary>
+        /// 响应位置刷新事件。
+        /// </summary>
+        private void EUpdatePosHandler(object sender, GameEventArgs e)
         {
-            int id = e.GetParam1<int>();
-            Vector3 pos = e.GetParam2<Vector3>();
+            FightUpdatePosEventArgs args = (FightUpdatePosEventArgs)e;
+            int id = args.RoleId;
+            Vector3 pos = args.Position;
             if (_fighShareModel.FightUiRoles.TryGetValue(id, out FightUIRole fightUIRole))
             {
                 if (fightUIRole.Hud == null)
@@ -103,7 +111,10 @@ namespace HotAssets.Scripts.UI.Module.FightShare
             }
         }
         
-        private void ERoleDieHandler(object sender, GameEvent e)
+        /// <summary>
+        /// 响应角色死亡事件。
+        /// </summary>
+        private void ERoleDieHandler(object sender, GameEventArgs e)
         {
          
         }

@@ -51,7 +51,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Fight
             if(_roleProgress < 1 || _sceneProgress < 1) return;
             if(!_isLoading) return;
             _isLoading = false;
-            Fire(GamePlayEvent.EFightLoadingFinish);
+            EventHelper.FireCommon(GamePlayEvent.EFightLoadingFinish);
         }
     }
 }

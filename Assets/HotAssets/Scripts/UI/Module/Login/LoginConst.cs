@@ -7,7 +7,7 @@ namespace HotAssets.Scripts.UI.Module.Login
     {
         public class Event
         {
-            public static readonly Int16 LoginSucc = ++GameEvent.UIEventId;
+            public static readonly int LoginSucc = ++GameEvent.UIEventId;
         }
     }
 }

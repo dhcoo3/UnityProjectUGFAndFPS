@@ -16,7 +16,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Joystick
 
         public override void Initialize()
         {
-            Subscribe(GamePlayEvent.EFightLoadingFinish,FightLoadingFinish);
+            EventHelper.SubscribeCommon(GamePlayEvent.EFightLoadingFinish,FightLoadingFinish);
         }
 
         public override void Clear()

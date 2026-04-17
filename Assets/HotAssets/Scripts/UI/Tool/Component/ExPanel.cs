@@ -164,6 +164,8 @@ namespace HotAssets.Scripts.UI.Tool.Component
     
         private AAAGameEventHelper m_EventHelper = new AAAGameEventHelper();
 
+        public AAAGameEventHelper EventHelper => m_EventHelper;
+
         public RectTransform URectTransform
         {
             get
@@ -320,7 +322,7 @@ namespace HotAssets.Scripts.UI.Tool.Component
         {
             //Debug.Log("界面关闭OnClose：" + this.gameObject.name);  
             m_UIAvailable = false;
-            RemoveAllSubscribe();
+            EventHelper.RemoveAllSubscribe();
             ClearAllRedDot();
             ClearAllEventTrigger();
             CloseAllSubUIForms();
@@ -685,44 +687,6 @@ namespace HotAssets.Scripts.UI.Tool.Component
         public void SetLock(bool isLock)
         {
             AppEntry.UI.SetUIFormInstanceLocked(this.UIForm,isLock);
-        }
-    
-        /// <summary>
-        /// 注册事件，让事件跟面板绑定，用于关闭面板时释放掉所有事件
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="handler"></param>
-        protected void Subscribe(Int16 id,EventHandler<GameEvent> handler)
-        {
-            m_EventHelper.Subscribe(id,handler);
-        }
-
-        /// <summary>
-        /// 派发事件
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="args"></param>
-        protected void Fire(Int16 id,params object[] args)
-        {
-            m_EventHelper.Fire(id,args);
-        }
-
-        /// <summary>
-        /// 移除事件
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="handler"></param>
-        protected void Unsubscribe(int id, EventHandler<GameEvent> handler)
-        {
-            m_EventHelper.Unsubscribe(id,handler);
-        }
-
-        /// <summary>
-        /// 移除所有绑定UI的事件
-        /// </summary>
-        protected void RemoveAllSubscribe()
-        {
-            m_EventHelper.RemoveAllSubscribe();
         }
     
         /// <summary>

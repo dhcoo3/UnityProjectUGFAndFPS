@@ -53,8 +53,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.MonsterSpawner
                 Log.Error("MonsterSpawnerProxy Initialize error = {0}", e.Message);
             }
 
-            Subscribe(GamePlayEvent.EFightLoadingFinish, OnFightLoadingFinish);
-            Subscribe(GamePlayEvent.EStopRenderRole, OnRoleDie);
+            EventHelper.SubscribeCommon(GamePlayEvent.EFightLoadingFinish, OnFightLoadingFinish);
+            EventHelper.SubscribeCommon(GamePlayEvent.EStopRenderRole, OnRoleDie);
         }
 
         public override void Clear()
@@ -121,7 +121,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.MonsterSpawner
                 if (monster == null) continue;
 
                 state.AliveMonsterIds.Add(monster.RoleId);
-                Fire(GamePlayEvent.ERenderMonster, monster);
+                EventHelper.FireCommon(GamePlayEvent.ERenderMonster, monster);
             }
         }
 

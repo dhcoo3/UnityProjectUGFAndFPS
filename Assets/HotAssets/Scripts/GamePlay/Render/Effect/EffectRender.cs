@@ -15,7 +15,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Effect
         private readonly Dictionary<int, EffectEntity> _effectViewDictionary = new Dictionary<int, EffectEntity>();
         public override void Initialize()
         {
-            Subscribe(GamePlayEvent.EPlayEffect,PlayEffect);
+            EventHelper.SubscribeCommon(GamePlayEvent.EPlayEffect,PlayEffect);
         }
 
         private void PlayEffect(object sender, GameEvent e)

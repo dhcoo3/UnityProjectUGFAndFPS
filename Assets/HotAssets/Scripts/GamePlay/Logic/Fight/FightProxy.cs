@@ -56,7 +56,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Fight
             }
 
             _fightEnded = true;
-            Fire(GamePlayEvent.EGameOver, isWin);
+            EventHelper.FireCommon(GamePlayEvent.EGameOver, isWin);
             GamePlayFacade.Instance.End();
         }
 

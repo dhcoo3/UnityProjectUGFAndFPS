@@ -170,7 +170,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Bullet
                     }
                 }
 
-                foreach (var (id,unit) in _unitProxy.Monsters)
+                foreach (var unit in _unitProxy.Monsters.Values)
                 {
                     if (!CanHit(unit)) continue;
 

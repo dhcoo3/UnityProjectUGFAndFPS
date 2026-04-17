@@ -27,9 +27,9 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
             _fightLoadingProxy = GetProxy<FightLoadingProxy>();
             _currentPlayer = GetProxy<PlayerProxy>();
                 
-            Subscribe(GamePlayEvent.ERenderAllRole,RenderAllRole);
-            Subscribe(GamePlayEvent.ERenderMonster,RenderMonster);
-            Subscribe(GamePlayEvent.EStopRenderRole,StopRenderRole);
+            EventHelper.SubscribeCommon(GamePlayEvent.ERenderAllRole,RenderAllRole);
+            EventHelper.SubscribeCommon(GamePlayEvent.ERenderMonster,RenderMonster);
+            EventHelper.SubscribeCommon(GamePlayEvent.EStopRenderRole,StopRenderRole);
         }
 
         public override void Clear()
@@ -41,7 +41,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         {
             if(_roleViewDictionary.Count == 0) return;
 
-            foreach (var (key,data) in _roleViewDictionary)
+            foreach (var data in _roleViewDictionary.Values)
             {
                 data.LogicUpdate(deltaTime);
             }
@@ -53,7 +53,6 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         {
             foreach (var roleUnit in _unitProxy.Heros.Values)
             {
-                Log.Info("RenderAllRole {0}",roleUnit.RoleId);
                 EntityParams param = EntityParams.Create(roleUnit.Behaviour.Position);
                 param.OnShowCallback += ShowRoleFinish;
                 param.Unit = roleUnit;
@@ -81,7 +80,6 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
             RoleUnit roleUnit = e.GetParam1<RoleUnit>();
             if(roleUnit == null) return;
             
-            Log.Info("RenderAllRole {0}",roleUnit.RoleId);
             EntityParams param = EntityParams.Create(roleUnit.Behaviour.Position);
             param.OnShowCallback += ShowRoleFinish;
             param.Unit = roleUnit;

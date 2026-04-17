@@ -40,7 +40,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Component
             UnitAI unitMove = ReferencePool.Acquire<UnitAI>();
             unitMove._unit = unit;
             unitMove._aiProxy = GameProxyManger.Instance.GetProxy<AIProxy>();
-            unitMove._aiClips = unitMove._aiProxy.GetAIClips(aiId);
+            unitMove._aiProxy.GetAIClips(aiId, unitMove._aiClips);
             return unitMove;
         }
         
@@ -143,24 +143,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Component
 
             for (int i = 0; i < _finishClips.Count; i++)
             {
-                AIClip finishClip = _finishClips[i];
-                
-                if (finishClip.SortType == SortType.ToLast)
+                _sortTargetClip = _finishClips[i];
+
+                if (_sortTargetClip.SortType == SortType.ToLast)
                 {
-                    ResortAIList((clip1, clip2) =>
-                    {
-                        if (finishClip == clip1)
-                        {
-                            return 1;
-                        }
-                        
-                        if (finishClip == clip2)
-                        {
-                            return -1;
-                        }
-                        
-                        return 0;
-                    });
+                    ResortAIList(CompareWithTargetClip);
                 }
             }
             
@@ -174,6 +161,23 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Component
         /// </summary>
         /// <param name="comparison"></param>
         public void ResortAIList(Comparison<AIClip> comparison) => _aiClips.Sort(comparison);
+
+        private AIClip _sortTargetClip;
+
+        private int CompareWithTargetClip(AIClip clip1, AIClip clip2)
+        {
+            if (_sortTargetClip == clip1)
+            {
+                return 1;
+            }
+
+            if (_sortTargetClip == clip2)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
 
     }
 }

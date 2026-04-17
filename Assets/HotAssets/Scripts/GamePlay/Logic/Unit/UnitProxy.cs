@@ -74,7 +74,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
             _playerProxy = GetProxy<PlayerProxy>();
             _skillProxy = GetProxy<SkillProxy>();
             _mapProxy = GetProxy<MapProxy>();
-            Subscribe(GamePlayEvent.EFightLoadingFinish,FightLoadingFinish);
+            EventHelper.SubscribeCommon(GamePlayEvent.EFightLoadingFinish,FightLoadingFinish);
         }
 
         public override void Clear()
@@ -93,8 +93,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
                 }
             }
             
-            Fire(GamePlayEvent.ECreateRoleAll);
-            Fire(GamePlayEvent.ERenderAllRole);
+            EventHelper.FireCommon(GamePlayEvent.ECreateRoleAll);
+            EventHelper.FireCommon(GamePlayEvent.ERenderAllRole);
         }
         
         public RoleUnit CreateHeroRoleUnit(int heroId,PlayerData playerData)
@@ -191,7 +191,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
             Units.Add(_id, bulletUnit);
             Bullets.Add(_id, bulletUnit);
             _unitList.Add(bulletUnit);
-            Fire(GamePlayEvent.ERenderBullet,bulletUnit);
+            EventHelper.FireCommon(GamePlayEvent.ERenderBullet,bulletUnit);
             return bulletUnit;
         }
 
@@ -203,7 +203,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
             Units.Add(_id, aoeUnit);
             Aoes.Add(_id, aoeUnit);
             _unitList.Add(aoeUnit);
-            Fire(GamePlayEvent.ERenderAoe,aoeUnit);
+            EventHelper.FireCommon(GamePlayEvent.ERenderAoe,aoeUnit);
             return aoeUnit;
         }
 
@@ -238,19 +238,19 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
                         Monsters.Remove(id);
                         RoleUnits.Remove(id);
                         GamePlayToUIBridge.Instance.RoleDie(roleUnit);
-                        FireNow(GamePlayEvent.EStopRenderRole, id);
+                        EventHelper.FireCommonNow(GamePlayEvent.EStopRenderRole, id);
                         ReferencePool.Release(roleUnit);
                     }
                     else if (unit is BulletUnit bulletUnit)
                     {
                         Bullets.Remove(id);
-                        FireNow(GamePlayEvent.EStopRenderBullet, id);
+                        EventHelper.FireCommonNow(GamePlayEvent.EStopRenderBullet, id);
                         ReferencePool.Release(bulletUnit);
                     }
                     else if (unit is AoeUnit aoeUnit)
                     {
                         Aoes.Remove(id);
-                        FireNow(GamePlayEvent.EStopRenderAoe, id);
+                        EventHelper.FireCommonNow(GamePlayEvent.EStopRenderAoe, id);
                         ReferencePool.Release(aoeUnit);
                     }
                 }
@@ -312,7 +312,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit
                 MainRole.LearnSkill(_skillProxy.GetSkillModel(100010));
                 MainRole.LearnSkill(_skillProxy.GetSkillModel(100011));
                 
-                Fire(GamePlayEvent.ECameraFocus,MainRole);
+                EventHelper.FireCommon(GamePlayEvent.ECameraFocus,MainRole);
             }
         }
     }

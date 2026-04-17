@@ -96,7 +96,7 @@ namespace HotAssets.Scripts.Procedures
             }
             Log.Info("场景加载进度:{0}, {1}", arg.Progress, arg.SceneAssetName);
             //TODO 显示场景加载进度
-            _aaaGameEventHelper.Fire(GamePlayEvent.ELoadSceneUpdate,arg.Progress,arg.SceneAssetName);
+            _aaaGameEventHelper.FireCommon(GamePlayEvent.ELoadSceneUpdate,arg.Progress,arg.SceneAssetName);
         }
 
         private void OnLoadSceneSuccess(object sender, GameEventArgs e)
@@ -108,7 +108,7 @@ namespace HotAssets.Scripts.Procedures
             }
             Log.Info("场景加载成功:{0}", arg.SceneAssetName);
             _loadSceneOver = true;
-            _aaaGameEventHelper.Fire(GamePlayEvent.ELoadSceneSuccess);
+            _aaaGameEventHelper.FireCommon(GamePlayEvent.ELoadSceneSuccess);
         }
     
         //加载场景资源失败 重启游戏框架
@@ -122,7 +122,7 @@ namespace HotAssets.Scripts.Procedures
 
             Log.Error("加载场景失败！", arg.SceneAssetName);
             //AppEntry.Shutdown(ShutdownType.Restart);
-            _aaaGameEventHelper.Fire(GamePlayEvent.ELoadSceneFailure);
+            _aaaGameEventHelper.FireCommon(GamePlayEvent.ELoadSceneFailure);
         }
     }
 }

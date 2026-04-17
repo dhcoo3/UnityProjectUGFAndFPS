@@ -14,8 +14,8 @@ namespace HotAssets.Scripts.GamePlay.Render.Aoe
         
         public override void Initialize()
         {
-            Subscribe(GamePlayEvent.ERenderAoe,RenderAoe);
-            Subscribe(GamePlayEvent.EStopRenderAoe,StopRenderAoe);
+            EventHelper.SubscribeCommon(GamePlayEvent.ERenderAoe,RenderAoe);
+            EventHelper.SubscribeCommon(GamePlayEvent.EStopRenderAoe,StopRenderAoe);
         }
         
         /// <summary>
@@ -71,7 +71,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Aoe
         {
             if(_aoeEntities.Count == 0) return;
 
-            foreach (var (key,data) in _aoeEntities)
+            foreach (var data in _aoeEntities.Values)
             {
                 data.LogicUpdate(deltaTime);
             }

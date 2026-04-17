@@ -18,7 +18,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Frame
 
         public FakeServer()
         {
-            _aaaGameEventHelper.Subscribe(GamePlayEvent.ESvrRoomPlayerInfoUpdate,SvrRoomPlayerInfoUpdate);
+            _aaaGameEventHelper.SubscribeCommon(GamePlayEvent.ESvrRoomPlayerInfoUpdate,SvrRoomPlayerInfoUpdate);
         }
 
         public void LogicUpdate(fix deltaTime)

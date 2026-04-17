@@ -86,7 +86,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
             ValidateMapInfo(_mapInfo);
 #endif
 
-            Fire(GamePlayEvent.ECreateMapRender, curMapData);
+            EventHelper.FireCommon(GamePlayEvent.ECreateMapRender, curMapData);
         }
 
         public override void Clear()

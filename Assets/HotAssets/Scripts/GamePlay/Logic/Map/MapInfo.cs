@@ -30,6 +30,10 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         ///</summary>
         public Rect border{get;}
 
+        // 复用临时容器，避免每次查询都分配新 List。
+        private readonly List<Rect> _collisionRects = new List<Rect>();
+        private readonly List<fix3> _candidatePositions = new List<fix3>();
+
 
         public MapInfo(GridInfo[,] map, fix2 gridSize) : this(map, gridSize, fix2.zero)
         {
@@ -118,13 +122,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         public bool CanUnitPlacedHere(fix3 pos, fix radius, cfg.Game.MoveType moveType){
             int2 lt = GetGridPosByMeter(pos.x - radius, pos.y - radius);
             int2 rb = GetGridPosByMeter(pos.x + radius, pos.y + radius);
-            int aw = rb.x - lt.x + 1;
-            int ah = rb.y - lt.y + 1;
-            List<Rect> collisionRects = new List<Rect>();
+            _collisionRects.Clear();
             for (int i = lt.x; i <= rb.x; i++){
                 for (int j = lt.y; j <= rb.y; j++){
                     if (CanGridPasses(i, j, moveType, false) == false){
-                        collisionRects.Add(new Rect(
+                        _collisionRects.Add(new Rect(
                             origin.x + i * gridSize.x,
                             origin.y + j * gridSize.y,
                             gridSize.x,
@@ -134,7 +136,9 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                     
                 }
             }
-            return !Utils.CircleHitRects(new fix2(pos.x, pos.y), radius, collisionRects);
+            bool canPlace = !Utils.CircleHitRects(new fix2(pos.x, pos.y), radius, _collisionRects);
+            _collisionRects.Clear();
+            return canPlace;
             // Vector2Int gPos = GetGridPosByMeter(pos.x, pos.z);
             // if (gPos.x < 0 || gPos.y < 0 || gPos.x >= MapWidth() || gPos.y >= MapHeight()) return false;
             // return grid[gPos.x, gPos.y].groundCanPass;
@@ -150,7 +154,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         ///<param name="moveType">单位移动模式</param>
         ///<return>可以落脚的坐标点</return>
         public fix3 GetRandomPosForCharacter(RectInt range, fix chaRadius, cfg.Game.MoveType moveType = cfg.Game.MoveType.Ground){
-            List<fix3> mayRes = new List<fix3>();
+            _candidatePositions.Clear();
             for (var i = range.x; i < range.x + range.width; i ++){
                 for (var j = range.y; j < range.y + range.height; j++){
                     //if (i >= 0 && i < MapWidth() && j >= 0 && j < MapHeight() && gridInfo[i, j].characterCanPass == true){
@@ -160,11 +164,16 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                         0
                     );
                     if (CanUnitPlacedHere(ranPos, chaRadius, moveType) == true) {  
-                        mayRes.Add(ranPos);
+                        _candidatePositions.Add(ranPos);
                     }
                 }
             }
-            return mayRes[fixMath.floorToInt(GamePlayFacade.Instance.Random.NextInt(0, mayRes.Count))];
+            if (_candidatePositions.Count == 0)
+            {
+                return fix3.zero;
+            }
+
+            return _candidatePositions[fixMath.floorToInt(GamePlayFacade.Instance.Random.NextInt(0, _candidatePositions.Count))];
         }
         
         ///<summary>

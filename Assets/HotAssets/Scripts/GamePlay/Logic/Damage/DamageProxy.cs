@@ -21,11 +21,14 @@ namespace HotAssets.Scripts.GamePlay.Logic.Damage
 
         public override void LogicUpdate(fix deltaTime)
         {
-            int i = 0;
-            while( i < _damageInfos.Count ){
-                DealWithDamage(_damageInfos[i]);
-                ReferencePool.Release(_damageInfos[i]);
-                _damageInfos.RemoveAt(0);
+            // 从队尾取出，避免 RemoveAt(0) 造成整段列表搬移。
+            while (_damageInfos.Count > 0)
+            {
+                int lastIndex = _damageInfos.Count - 1;
+                DamageInfo damageInfo = _damageInfos[lastIndex];
+                _damageInfos.RemoveAt(lastIndex);
+                DealWithDamage(damageInfo);
+                ReferencePool.Release(damageInfo);
             }
         }
 
@@ -89,8 +92,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Damage
                     }*/
                 }
                 
-                Log.Info("ModResource");
-                
+                // 伤害流程是高频路径，避免在这里刷日志。
                 defender.ModResource(new ChaResource(
                     -dVal
                 ));

@@ -2,8 +2,8 @@
 using System.Collections;
 using Builtin.Scripts.Extension;
 using Builtin.Scripts.Game;
+using GameFramework.Event;
 using HotAssets.Scripts.Common;
-using HotAssets.Scripts.Common.Event;
 using HotAssets.Scripts.Extension;
 using HotAssets.Scripts.UI.Tool.Component;
 using TuanjieAI.Assistant.Schema;
@@ -27,7 +27,7 @@ namespace HotAssets.Scripts.UI.Module.FightShare
         
         protected override void RegisterEvent()
         {
-            Subscribe(FightShareConst.Event.EPopUpNumber,EPopUpNumberHandler);
+            EventHelper.Subscribe(FightPopUpNumberEventArgs.EventId, EPopUpNumberHandler);
         }
 
         protected override void OnOpen(object userData)
@@ -47,18 +47,19 @@ namespace HotAssets.Scripts.UI.Module.FightShare
                     DamageTextUI = asset;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                Log.Warning("加载DamageTextUI失败");
             }
         }
         
-        private void EPopUpNumberHandler(object sender, GameEvent e)
+        /// <summary>
+        /// 响应伤害弹字事件。
+        /// </summary>
+        private void EPopUpNumberHandler(object sender, GameEventArgs e)
         {
-            fix3 pos = e.GetParam1<fix3>();
-            int damageVal = e.GetParam2<int>();
-            bool isHeal = e.GetParam3<bool>();
-            StartCoroutine(StartShow(pos,damageVal,isHeal));
+            FightPopUpNumberEventArgs args = (FightPopUpNumberEventArgs)e;
+            StartCoroutine(StartShow(args.Position, args.DamageVal, args.IsHeal));
         }
         
         /// <summary>

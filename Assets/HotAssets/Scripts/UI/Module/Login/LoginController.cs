@@ -150,7 +150,7 @@ namespace HotAssets.Scripts.UI.Module.Login
             {
                 _currentState = LoginState.LoginSuccess;
                 LoginModel.Instance.LoginData = csRoleLoginRes;
-                Fire(LoginConst.Event.LoginSucc);
+                EventHelper.FireCommon(LoginConst.Event.LoginSucc);
                 Log.Info("Login successful!");
             }
             else

@@ -204,7 +204,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Aoe
         /// </summary>
         void FirstCheckAllRoleInRange()
         {
-            foreach (var (id,target) in _unitProxy.Units)
+            foreach (var target in _unitProxy.Units.Values)
             {
                 if (target.IsDeath()) continue;
                 
@@ -247,7 +247,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Aoe
         /// </summary>
         void CheckAllRoleInRange(ref List<IUnit> enterCha)
         {
-            foreach (var (id,target) in _unitProxy.Units)
+            foreach (var target in _unitProxy.Units.Values)
             {
                 if (target.IsDeath()) continue;
                 
@@ -289,7 +289,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Aoe
         /// <param name="enterBullet"></param>
         void CheckAllBulletInRange(ref List<IUnit> enterBullet)
         {
-            foreach (var (id,target) in _unitProxy.Bullets)
+            foreach (var target in _unitProxy.Bullets.Values)
             {
                 if (_aoeUnit.Data.bulletInRange.IndexOf(target) < 0 && InRange(target))
                 {

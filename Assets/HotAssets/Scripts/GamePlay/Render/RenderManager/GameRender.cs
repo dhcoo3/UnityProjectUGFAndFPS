@@ -11,14 +11,14 @@ namespace HotAssets.Scripts.GamePlay.Render.RenderManager
     {
         public abstract void Initialize();
         
-        private readonly AAAGameEventHelper _aaaGameEventHelper = ReferencePool.Acquire<AAAGameEventHelper>();
+        private readonly AAAGameEventHelper m_EventHelper = ReferencePool.Acquire<AAAGameEventHelper>();
 
-        private readonly Dictionary<int, List<EventHandler<GameEventArgs>>> _events =
-            new Dictionary<int, List<EventHandler<GameEventArgs>>>();
+        public AAAGameEventHelper EventHelper => m_EventHelper;
+        
 
         public virtual void Clear()
         {
-            ReferencePool.Release(_aaaGameEventHelper);
+            m_EventHelper.RemoveAllSubscribe();
         }
       
         public virtual void LogicUpdate(fix deltaTime)
@@ -26,26 +26,6 @@ namespace HotAssets.Scripts.GamePlay.Render.RenderManager
 
         }
       
-        protected void Subscribe(Int16 id, EventHandler<GameEvent> handler)
-        {
-            _aaaGameEventHelper.Subscribe(id,handler);
-        }
-
-        protected void Fire(Int16 id, params object[] args)
-        {
-            _aaaGameEventHelper.Fire(id, args);
-        }
-
-        protected void Unsubscribe(Int16 id, EventHandler<GameEvent> handler)
-        {
-            _aaaGameEventHelper.Unsubscribe(id,handler);
-        }
-
-        protected void RemoveAllSubscribe()
-        {
-            _aaaGameEventHelper.RemoveAllSubscribe();
-        }
-
         protected T GetRender<T>() where T : GameRender
         {
             return GameRenderManager.Instance.GetRender<T>();

@@ -7,9 +7,9 @@ namespace HotAssets.Scripts.Common.Event
 {
     public class GameEvent : GameEventArgs
     {
-        public static Int16 UIEventId = 1;
+        public static int UIEventId = 1;
     
-        private Int16 m_EventId = 0;
+        private int m_EventId = 0;
 
         private object[] m_Args;
 
@@ -18,7 +18,7 @@ namespace HotAssets.Scripts.Common.Event
             get { return m_Args; }
         }
     
-        public static GameEvent Create(Int16 id, params object[] args)
+        public static GameEvent Create(int id, params object[] args)
         {
             GameEvent gameEvent = ReferencePool.Acquire<GameEvent>();
             gameEvent.m_EventId = id;

@@ -44,11 +44,13 @@ namespace HotAssets.Scripts.Common
             return false;
         }
         public static bool CircleHitRects(fix2 circlePivot, fix circleRadius, Rect[] rects){
-            List<Rect> rl = new List<Rect>();
+            if (rects == null || rects.Length == 0) return false;
             for (var i = 0; i < rects.Length; i++){
-                rl.Add(rects[i]);
+                if (Utils.CircleHitRect(circlePivot, circleRadius, rects[i]) == true){
+                    return true;
+                }
             }
-            return CircleHitRects(circlePivot, circleRadius, rl);
+            return false;
         }
 
         public static bool CircleHitRect(fix2 circlePivot, fix circleRadius, Rect rect){

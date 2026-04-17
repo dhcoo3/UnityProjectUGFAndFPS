@@ -36,7 +36,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Camera
         {
             _fightCamera = UnityEngine.Camera.main;
             _mapProxy = GameProxyManger.Instance.GetProxy<MapProxy>();
-            Subscribe(GamePlayEvent.ECameraFocus,CameraFocus);
+            EventHelper.SubscribeCommon(GamePlayEvent.ECameraFocus,CameraFocus);
         }
 
         private void CameraFocus(object sender, GameEvent e)

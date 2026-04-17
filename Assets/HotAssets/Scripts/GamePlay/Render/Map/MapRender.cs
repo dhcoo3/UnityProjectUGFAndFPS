@@ -39,14 +39,14 @@ namespace HotAssets.Scripts.GamePlay.Render.Map
         {
             _fightLoadingProxy = GetProxy<FightLoadingProxy>();
             _mapProxy = GetProxy<MapProxy>();
-            Subscribe(GamePlayEvent.ECreateMapRender,CreateMapView);
+            EventHelper.SubscribeCommon(GamePlayEvent.ECreateMapRender,CreateMapView);
         }
         
         public override void LogicUpdate(fix deltaTime)
         {
-            foreach (var kv in _platformEntities)
+            foreach (var platformEntity in _platformEntities.Values)
             {
-                kv.Value.LogicUpdate(deltaTime);
+                platformEntity.LogicUpdate(deltaTime);
             }
         }
 
@@ -66,17 +66,15 @@ namespace HotAssets.Scripts.GamePlay.Render.Map
             }
             _loadSceneOver = false;
             
-            Subscribe(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
-            Subscribe(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
-            Subscribe(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
             AppEntry.Event.Fire(this, ChangeSceneArgs.Create(mapData.Name));
         }
         
         private void OnLoadSceneUpdate(object sender, GameEvent e)
         {
             float progress = e.GetParam1<float>();
-            string sceneAssetName = e.GetParam2<string>();
-            Log.Info("场景加载进度:{0}, {1}", progress, sceneAssetName);
             //TODO 显示场景加载进度
             _fightLoadingProxy.SetSceneProgress(progress);
         }
@@ -104,9 +102,9 @@ namespace HotAssets.Scripts.GamePlay.Render.Map
         {
             _loadSceneOver = true;
             _fightLoadingProxy.SetSceneProgress(1);
-            Unsubscribe(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
-            Unsubscribe(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
-            Unsubscribe(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneSuccess,OnLoadSceneSuccess);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneUpdate,OnLoadSceneUpdate);
+            EventHelper.SubscribeCommon(GamePlayEvent.ELoadSceneFailure,OnLoadSceneFailure);
             AppEntry.Sound.PlayBGM(_mapProxy.CurMapData.Music);
         }
         

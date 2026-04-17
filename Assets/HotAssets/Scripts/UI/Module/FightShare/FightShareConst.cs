@@ -15,11 +15,11 @@ namespace HotAssets.Scripts.UI.Module.FightShare
         public const string OverlayFightDamageUI = "OverlayFightDamageUI";
         public class Event
         {
-            public static readonly Int16 ECreateRole = ++GameEvent.UIEventId;
-            public static readonly Int16 EUpdatePos = ++GameEvent.UIEventId;
-            public static readonly Int16 EUpdateHp = ++GameEvent.UIEventId;
-            public static readonly Int16 ERoleDie = ++GameEvent.UIEventId;
-            public static readonly Int16 EPopUpNumber = ++GameEvent.UIEventId;
+            public static readonly int ECreateRole = ++GameEvent.UIEventId;
+            public static readonly int EUpdatePos = ++GameEvent.UIEventId;
+            public static readonly int EUpdateHp = ++GameEvent.UIEventId;
+            public static readonly int ERoleDie = ++GameEvent.UIEventId;
+            public static readonly int EPopUpNumber = ++GameEvent.UIEventId;
         }
     }
 }

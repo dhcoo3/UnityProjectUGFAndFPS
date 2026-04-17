@@ -50,13 +50,23 @@ namespace HotAssets.Scripts.GamePlay.Logic.AI
         public List<AIClip> GetAIClips(int id)
         {
             List<AIClip> aiClips = new List<AIClip>();
-            
+            GetAIClips(id, aiClips);
+            return aiClips;
+        }
+
+        /// <summary>
+        /// 填充 AI 片段到已有容器，避免每次创建新 List。
+        /// </summary>
+        public void GetAIClips(int id, List<AIClip> target)
+        {
+            target.Clear();
+
             AIGroupDef aiGroupDef = _tbAIGroupDef.GetOrDefault(id);
 
             if (aiGroupDef == null)
             {
                 Log.Warning("aiGroupDef is null {0}",id);
-                return aiClips;
+                return;
             }
 
             for (int i = 0; i < aiGroupDef.AiActionList.Count; i++)
@@ -65,7 +75,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.AI
 
                 if (_aiClips.TryGetValue(aiActionId, out AIClip aiClip))
                 {
-                    aiClips.Add(aiClip);
+                    target.Add(aiClip);
                     continue;
                 }
                 
@@ -77,10 +87,10 @@ namespace HotAssets.Scripts.GamePlay.Logic.AI
                     continue;
                 }
 
-                aiClips.Add(AIClip.Create(aiActionDef));
+                aiClip = AIClip.Create(aiActionDef);
+                _aiClips.Add(aiActionId, aiClip);
+                target.Add(aiClip);
             }
-
-            return aiClips;
         }
     }
 }

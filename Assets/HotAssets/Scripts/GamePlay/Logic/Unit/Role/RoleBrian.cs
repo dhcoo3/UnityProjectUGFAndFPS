@@ -73,7 +73,6 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
 
         // 复用列表，避免每帧 GC alloc
         private readonly List<BuffObj> _toRemoveBuffs = new List<BuffObj>();
-        private readonly List<IUnit> _bCasterTemp = new List<IUnit>();
         
         
         public static RoleBrian CreateRoleBrian(RoleUnit roleUnit)
@@ -431,37 +430,31 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
         ///为角色添加buff，当然，删除也是走这个的
         ///</summary>
         public void AddBuff(AddBuffInfo buff){
-            _bCasterTemp.Clear();
-
-            if (buff.caster != null)
-            {
-                _bCasterTemp.Add(buff.caster);
-            }
-
-            List<BuffObj> hasOnes = _roleUnit.Data.GetBuffById(buff.buffModel.id, _bCasterTemp);
+            BuffObj hasOne;
+            bool hasExistingBuff = _roleUnit.Data.TryGetBuffById(buff.buffModel.id, out hasOne, buff.caster);
             int modStack = (int)fixMath.min(buff.addStack, buff.buffModel.maxStack);
             bool toRemove = false;
             BuffObj toAddBuff = null;
         
-            if (hasOnes.Count > 0){
+            if (hasExistingBuff){
                 //已经存在
-                hasOnes[0].buffParam = new Dictionary<string, object>();
+                hasOne.buffParam = new Dictionary<string, object>();
                 if (buff.buffParam != null){
                     foreach (KeyValuePair<string, object> kv in buff.buffParam)
                     {
-                        hasOnes[0].buffParam[kv.Key] = kv.Value;
+                        hasOne.buffParam[kv.Key] = kv.Value;
                     };
                 }
             
-                hasOnes[0].duration = (buff.durationSetTo == true) ? buff.duration : (buff.duration + hasOnes[0].duration);
-                int afterAdd = hasOnes[0].stack + modStack;
-                modStack = afterAdd >= hasOnes[0].model.maxStack ? 
-                    (hasOnes[0].model.maxStack - hasOnes[0].stack) : 
-                    (afterAdd <= 0 ? (0 - hasOnes[0].stack) : modStack);
-                hasOnes[0].stack += modStack;
-                hasOnes[0].permanent = buff.permanent;
-                toAddBuff = hasOnes[0];
-                toRemove = hasOnes[0].stack <= 0;
+                hasOne.duration = (buff.durationSetTo == true) ? buff.duration : (buff.duration + hasOne.duration);
+                int afterAdd = hasOne.stack + modStack;
+                modStack = afterAdd >= hasOne.model.maxStack ?
+                    (hasOne.model.maxStack - hasOne.stack) :
+                    (afterAdd <= 0 ? (0 - hasOne.stack) : modStack);
+                hasOne.stack += modStack;
+                hasOne.permanent = buff.permanent;
+                toAddBuff = hasOne;
+                toRemove = hasOne.stack <= 0;
             }
             else
             {

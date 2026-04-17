@@ -19,15 +19,15 @@ namespace HotAssets.Scripts.GamePlay.Render.Bullet
         
         public override void Initialize()
         {
-            Subscribe(GamePlayEvent.ERenderBullet,RenderBullet);
-            Subscribe(GamePlayEvent.EStopRenderBullet,StopRenderBullet);
+            EventHelper.SubscribeCommon(GamePlayEvent.ERenderBullet,RenderBullet);
+            EventHelper.SubscribeCommon(GamePlayEvent.EStopRenderBullet,StopRenderBullet);
         }
         
         public override void LogicUpdate(fix deltaTime)
         {
             if(_bulletEntities.Count == 0) return;
 
-            foreach (var (key,data) in _bulletEntities)
+            foreach (var data in _bulletEntities.Values)
             {
                 data.LogicUpdate(deltaTime);
             }

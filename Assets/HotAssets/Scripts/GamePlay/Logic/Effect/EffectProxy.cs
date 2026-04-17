@@ -21,7 +21,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Effect
         {
             _id++;
             EffectData data = EffectData.Create(_id, effectName, position,1);
-            Fire(GamePlayEvent.EPlayEffect, data);
+            EventHelper.FireCommon(GamePlayEvent.EPlayEffect, data);
         }
     }
 }

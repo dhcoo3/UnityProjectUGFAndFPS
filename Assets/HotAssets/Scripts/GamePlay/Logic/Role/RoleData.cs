@@ -128,6 +128,32 @@ namespace HotAssets.Scripts.GamePlay.Logic.Role
             return res;
         }
 
+        /// <summary>
+        /// 直接查找第一个符合条件的 buff，避免分配临时 List。
+        /// </summary>
+        public bool TryGetBuffById(int id, out BuffObj buffObj, IUnit caster = null)
+        {
+            for (int i = 0; i < Buffs.Count; i++)
+            {
+                BuffObj currentBuff = Buffs[i];
+                if (currentBuff.model.id != id)
+                {
+                    continue;
+                }
+
+                if (caster != null && currentBuff.caster != caster)
+                {
+                    continue;
+                }
+
+                buffObj = currentBuff;
+                return true;
+            }
+
+            buffObj = null;
+            return false;
+        }
+
         public int AIId = 0;
 
         public int AnimId = 0;

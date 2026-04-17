@@ -29,6 +29,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         private UnitAnim _unitAnim;
 
         private Vector3 _tmpVector3 = Vector3.zero;
+        private readonly Dictionary<cfg.Anim.Type, AnimInfo> _animDic = new Dictionary<cfg.Anim.Type, AnimInfo>();
 
      public UnitAnim RoleUnitAnim
         {
@@ -220,7 +221,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
         {
            if (animGroup <= 0) return;
             
-            Dictionary<cfg.Anim.Type, AnimInfo> animDic = new Dictionary<cfg.Anim.Type, AnimInfo>();
+            _animDic.Clear();
             TbAnimGroup tbAnimGroup = await AppEntry.DataTable.GetDataTableLuBan<TbAnimGroup>(cfg.Tables.anim_tbanimgroup);
             TbAnimDef tbAnimDef = await AppEntry.DataTable.GetDataTableLuBan<TbAnimDef>(cfg.Tables.anim_tbanimdef);
             
@@ -241,9 +242,9 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
                     continue;
                 }
                 
-                animDic.TryAdd(anim.Type, new AnimInfo(anim.Type,anim.Priority));
+                _animDic.TryAdd(anim.Type, new AnimInfo(anim.Type,anim.Priority));
 
-                if (animDic.TryGetValue(anim.Type, out AnimInfo animInfo))
+                if (_animDic.TryGetValue(anim.Type, out AnimInfo animInfo))
                 {
                     animInfo.allAnims.TryAdd(anim.Direction,new List<SingleAnimInfo>());
 
@@ -261,7 +262,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
                 }
             }
 
-            RoleUnitAnim.animInfo = animDic;
+            RoleUnitAnim.animInfo = _animDic;
         }
     }
 }
