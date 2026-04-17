@@ -15,7 +15,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         /// <summary>当前帧中心坐标</summary>
         public fix3 Position;
 
-        /// <summary>上一帧中心坐标，用于计算本帧位移差</summary>
+        /// <summary>上一帧中心坐标，用于计算本帧位移</summary>
         public fix3 PrevPosition;
 
         /// <summary>来回移动的起点</summary>
@@ -24,22 +24,22 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         /// <summary>来回移动的终点</summary>
         public fix3 EndPos;
 
-        /// <summary>移动速度（m/s）</summary>
+        /// <summary>移动速度，单位：m/s</summary>
         public fix Speed;
 
-        /// <summary>平台碰撞半宽（用于站立检测，X 轴方向）</summary>
+        /// <summary>平台碰撞半宽，用于站立检测，X 轴方向</summary>
         public fix HalfWidth;
 
-        /// <summary>平台碰撞半高（Y 轴方向；上表面 = Position.y + HalfHeight）</summary>
+        /// <summary>平台碰撞半高，表面 Y = Position.y + HalfHeight</summary>
         public fix HalfHeight;
 
         /// <summary>预制体资源路径</summary>
         public string AssetPath;
 
-        // 方向标志：1 = 向 EndPos 移动，-1 = 向 StartPos 移动
+        /// <summary>方向标记：1 = 朝 EndPos，-1 = 朝 StartPos</summary>
         private int _dir = 1;
 
-        /// <summary>平台上表面的 Y 坐标</summary>
+        /// <summary>平台表面 Y 坐标</summary>
         public fix SurfaceY => Position.y + HalfHeight;
 
         /// <summary>
@@ -73,23 +73,18 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
             }
         }
 
-        /// <summary>
-        /// 本帧平台位移差（当前位置 - 上帧位置）。
-        /// </summary>
+        /// <summary>本帧平台位移（当前 - 上一帧）。</summary>
         public fix3 GetDeltaThisFrame() => Position - PrevPosition;
 
         /// <summary>
-        /// 检测角色是否站在平台上。
-        /// 竖向向下容差 0.5m（允许重力已将角色略微拉低），向上 0.3m（允许刚踩上来的情况）。
+        /// 判断角色是否站在平台上。
+        /// 这里使用较小的垂直容差，避免离开边缘后仍长时间被判定为“站立”。
         /// </summary>
-        /// <param name="rolePos">角色当前脚部坐标（逻辑层 Position）</param>
-        /// <param name="bodyRadius">角色碰撞体半径</param>
         public bool IsStandingOn(fix3 rolePos, fix bodyRadius)
         {
             fix top = SurfaceY;
-            // 角色 Position 是圆心，脚底 = rolePos.y - bodyRadius，需要与平台上表面对齐
             fix feetY = rolePos.y - bodyRadius;
-            bool verticalMatch = feetY >= top - (fix)0.5f && feetY <= top + (fix)0.3f;
+            bool verticalMatch = feetY >= top - (fix)0.08f && feetY <= top + (fix)0.08f;
             bool horizontalMatch = rolePos.x >= Position.x - HalfWidth - bodyRadius
                                 && rolePos.x <= Position.x + HalfWidth + bodyRadius;
             return verticalMatch && horizontalMatch;

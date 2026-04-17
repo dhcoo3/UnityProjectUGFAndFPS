@@ -30,12 +30,7 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
 
         private Vector3 _tmpVector3 = Vector3.zero;
 
-        /// <summary>
-        /// 标准的BodyRadius值（米），用于计算渲染偏移
-        /// 当实际BodyRadius与标准值不同时，自动调整渲染位置以避免预制件穿透地面
-        /// </summary>
-        private float STANDARD_BODY_RADIUS = fix.One;
-        public UnitAnim RoleUnitAnim
+     public UnitAnim RoleUnitAnim
         {
             get
             {
@@ -108,11 +103,6 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
             _tmpVector3.y =  _roleUnit.Behaviour.Position.y;
             _tmpVector3.z =  _roleUnit.Behaviour.Position.z;
 
-            // 修复BodyRadius改变导致的渲染偏移
-            // 当BodyRadius与标准值不同时，自动调整Y位置，避免预制件穿透地面
-            float bodyRadiusOffset = STANDARD_BODY_RADIUS - _roleUnit.BodyRadius;
-            _tmpVector3.y += bodyRadiusOffset;
-
             //更新显示位置
             transform.position = _tmpVector3;
             
@@ -164,6 +154,62 @@ namespace HotAssets.Scripts.GamePlay.Render.Role
             Gizmos.color = new Color(1f, 1f, 0f, 1f);
             float markerSize = Mathf.Max(bodyRadius, hitRadius) * 0.1f;
             Gizmos.DrawSphere(new Vector3(px, py, 0f), markerSize);
+
+            // 绘制地图碰撞网格
+            DrawMapGrid();
+        }
+
+        /// <summary>
+        /// 绘制地图碰撞网格（灰色表示不可通过的网格）
+        /// </summary>
+        private void DrawMapGrid()
+        {
+            try
+            {
+                var mapProxy = HotAssets.Scripts.GamePlay.Logic.ProxyManager.GameProxyManger.Instance?
+                    .GetProxy<HotAssets.Scripts.GamePlay.Logic.Map.MapProxy>();
+                if (mapProxy?.MapInfo == null) return;
+
+                var mapInfo = mapProxy.MapInfo;
+                int width = mapInfo.MapWidth();
+                int height = mapInfo.MapHeight();
+                float gridSizeX = (float)mapInfo.gridSize.x;
+                float gridSizeY = (float)mapInfo.gridSize.y;
+                float originX = (float)mapInfo.origin.x;
+                float originY = (float)mapInfo.origin.y;
+
+                // 绘制不可通过的网格（灰色）
+                Gizmos.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        if (!mapInfo.grid[x, y].groundCanPass)
+                        {
+                            float gridX = originX + (x + 0.5f) * gridSizeX;
+                            float gridY = originY + (y + 0.5f) * gridSizeY;
+                            Gizmos.DrawCube(new Vector3(gridX, gridY, 0f),
+                                          new Vector3(gridSizeX, gridSizeY, 0.1f));
+                        }
+                    }
+                }
+
+                // 绘制可通过的网格边界（绿色细线）
+                Gizmos.color = new Color(0f, 1f, 0f, 0.2f);
+                for (int x = 0; x <= width; x++)
+                {
+                    float gridX = originX + x * gridSizeX;
+                    Gizmos.DrawLine(new Vector3(gridX, originY, 0f),
+                                  new Vector3(gridX, originY + height * gridSizeY, 0f));
+                }
+                for (int y = 0; y <= height; y++)
+                {
+                    float gridY = originY + y * gridSizeY;
+                    Gizmos.DrawLine(new Vector3(originX, gridY, 0f),
+                                  new Vector3(originX + width * gridSizeX, gridY, 0f));
+                }
+            }
+            catch { }
         }
 
         /// <summary>

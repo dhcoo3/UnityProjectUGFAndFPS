@@ -65,7 +65,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.MonsterSpawner
 
         public override void LogicUpdate(fix deltaTime)
         {
-            // 检测任意玩家是否到达触发点（多人游戏支持）
+            /*// 检测任意玩家是否到达触发点（多人游戏支持）
             List<RoleUnit> allPlayers = _unitProxy.GetAllPlayerRoles();
             if (allPlayers == null || allPlayers.Count == 0) return;
 
@@ -92,7 +92,7 @@ namespace HotAssets.Scripts.GamePlay.Logic.MonsterSpawner
                     state.Triggered = true;
                     SpawnMonsters(state);
                 }
-            }
+            }*/
         }
 
         /// <summary>

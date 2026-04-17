@@ -24,5 +24,6 @@ namespace HotAssets.Scripts.GamePlay.Logic.Common
         public static readonly Int16 ELoadSceneSuccess = ++GameEvent.UIEventId;
         public static readonly Int16 ELoadSceneFailure = ++GameEvent.UIEventId;
         public static readonly Int16 ELoadSceneUpdate = ++GameEvent.UIEventId;
+        public static readonly Int16 EGameOver = ++GameEvent.UIEventId;
     }
 }

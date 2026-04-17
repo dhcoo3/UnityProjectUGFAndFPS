@@ -74,6 +74,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.ProxyManager
 
         public T GetProxy<T>() where T : GameProxy
         {
+            if (_proxyList == null)
+            {
+                return null;
+            }
+
             foreach (var data in _proxyList)
             {
                 if (data is T)
@@ -87,6 +92,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.ProxyManager
      
         public void LogicUpdate(fix deltaTime)
         {
+            if (_proxyList == null)
+            {
+                return;
+            }
+
             for(int i = 0;i< _proxyList.Length;i++)
             {
                 _proxyList[i].LogicUpdate(deltaTime);
@@ -95,6 +105,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.ProxyManager
 
         public void Clear()
         {
+            if (_proxyList == null)
+            {
+                return;
+            }
+
             for(int i = 0;i< _proxyList.Length;i++)
             {
                 ReferencePool.Release(_proxyList[i]);

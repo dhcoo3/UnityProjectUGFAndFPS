@@ -43,6 +43,11 @@ namespace HotAssets.Scripts.GamePlay.Render.RenderManager
 
         public T GetRender<T>() where T : GameRender
         {
+            if (_gameRenders == null)
+            {
+                return null;
+            }
+
             foreach (var data in _gameRenders)
             {
                 if (data is T)
@@ -56,6 +61,11 @@ namespace HotAssets.Scripts.GamePlay.Render.RenderManager
         
         public void LogicUpdate(fix deltaTime)
         {
+            if (_gameRenders == null)
+            {
+                return;
+            }
+
             for(int i=0;i<_gameRenders.Length;i++)
             {
                 _gameRenders[i].LogicUpdate(deltaTime);
@@ -64,6 +74,11 @@ namespace HotAssets.Scripts.GamePlay.Render.RenderManager
 
         public void Clear()
         {
+            if (_gameRenders == null)
+            {
+                return;
+            }
+
             for(int i=0;i<_gameRenders.Length;i++)
             {
                 ReferencePool.Release(_gameRenders[i]);

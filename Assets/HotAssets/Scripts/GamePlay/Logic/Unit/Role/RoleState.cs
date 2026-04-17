@@ -76,6 +76,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             this.canRotate = true;
             this.canUseSkill = true;
             this.ImmuneTime = 0;
+            // 重置落地状态，防止上一帧的接地状态残留导致判定错误
+            this.IsGrounded = false;
         }
 
         public static RoleState origin = new RoleState(true, true, true);

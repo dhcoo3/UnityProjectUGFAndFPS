@@ -34,7 +34,8 @@
       "Bash(git submodule:*)",
       "Bash(git commit:*)",
       "Bash(grep:*)",
-      "Bash(xargs wc:*)"
+      "Bash(xargs wc:*)",
+      "Bash(ls:*)"
     ]
   },
   "model": "claude-haiku-4-5-20251001",

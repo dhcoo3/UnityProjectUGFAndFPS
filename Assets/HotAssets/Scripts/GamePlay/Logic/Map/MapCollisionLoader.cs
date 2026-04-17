@@ -7,18 +7,16 @@ using UnityGameFramework.Runtime;
 namespace HotAssets.Scripts.GamePlay.Logic.Map
 {
     /// <summary>
-    /// 从二进制文件加载 TileMap 碰撞数据，构建 MapInfo
-    /// 文件格式与 TilemapCollisionExporter 导出格式对应：
+    /// 从二进制文件加载 TileMap 碰撞数据，构建 MapInfo。
+    /// 文件格式与 TilemapCollisionExporter 对应：
     ///   int width, int height, float gridSizeX, float gridSizeY, float originX, float originY
     ///   + width*height 组 (bool groundCanPass, bool flyCanPass)
     /// </summary>
     public static class MapCollisionLoader
     {
         /// <summary>
-        /// 从 bytes 资源加载碰撞数据，返回 MapInfo
+        /// 从 bytes 资源加载碰撞数据，返回 MapInfo。
         /// </summary>
-        /// <param name="asset">通过资源系统加载的 TextAsset（.bytes 文件）</param>
-        /// <returns>构建好的 MapInfo，失败返回 null</returns>
         public static MapInfo LoadFromBytes(TextAsset asset)
         {
             if (asset == null)
@@ -30,10 +28,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         }
 
         /// <summary>
-        /// 直接从绝对路径加载碰撞数据（Editor 调试用）
+        /// 直接从绝对路径加载碰撞数据（Editor 调试用）。
         /// </summary>
-        /// <param name="filePath">文件绝对路径</param>
-        /// <returns>构建好的 MapInfo，失败返回 null</returns>
         public static MapInfo LoadFromFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -45,18 +41,17 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         }
 
         /// <summary>
-        /// 解析二进制数据，构建 MapInfo
+        /// 解析二进制数据，构建 MapInfo。
         /// </summary>
         public static MapInfo ParseBytes(byte[] data)
         {
             using (var stream = new MemoryStream(data))
             using (var reader = new BinaryReader(stream, Encoding.UTF8))
             {
-                int width     = reader.ReadInt32();
-                int height    = reader.ReadInt32();
-                float sizeX   = reader.ReadSingle();
-                float sizeY   = reader.ReadSingle();
-                // originX/Y 暂存，后续如需偏移地图原点可使用
+                int width = reader.ReadInt32();
+                int height = reader.ReadInt32();
+                float sizeX = reader.ReadSingle();
+                float sizeY = reader.ReadSingle();
                 float originX = reader.ReadSingle();
                 float originY = reader.ReadSingle();
 
@@ -66,13 +61,16 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                     for (int y = 0; y < height; y++)
                     {
                         bool groundCanPass = reader.ReadBoolean();
-                        bool flyCanPass    = reader.ReadBoolean();
+                        bool flyCanPass = reader.ReadBoolean();
                         grid[x, y] = new GridInfo(string.Empty, groundCanPass, flyCanPass);
                     }
                 }
 
-                Log.Info(ZString.Format("[MapCollisionLoader] 加载成功 {0}x{1} 格，格子大小 {2}x{3} 米", width, height, sizeX, sizeY));
-                return new MapInfo(grid, new fix2(sizeX, sizeY));
+                Log.Info(ZString.Format(
+                    "[MapCollisionLoader] 加载成功 {0}x{1} 格，格子大小 {2}x{3} 米，原点({4},{5})",
+                    width, height, sizeX, sizeY, originX, originY));
+
+                return new MapInfo(grid, new fix2(sizeX, sizeY), new fix2(originX, originY));
             }
         }
     }

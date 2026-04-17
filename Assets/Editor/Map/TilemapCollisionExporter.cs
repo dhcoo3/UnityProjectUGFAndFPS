@@ -108,6 +108,8 @@ namespace Editor.Map
             {
                 for (int y = 0; y < height; y++)
                 {
+                    // 使用网格中心坐标：(bounds.xMin + x + 0.5, bounds.yMin + y + 0.5)
+                    // 这样与 MapInfo 中的网格表示保持一致
                     var cellPos = new Vector3Int(bounds.xMin + x, bounds.yMin + y, 0);
                     groundPass[x, y] = !groundTilemap.HasTile(cellPos);
                     flyPass[x, y] = flyTilemap != null

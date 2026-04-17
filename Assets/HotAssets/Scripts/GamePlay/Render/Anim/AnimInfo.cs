@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using cfg.Anim;
+using HotAssets.Scripts.GamePlay;
 
 namespace HotAssets.Scripts.GamePlay.Render.Anim
 {
@@ -34,8 +35,16 @@ namespace HotAssets.Scripts.GamePlay.Render.Anim
             if (allAnims.TryGetValue(direction, out List<SingleAnimInfo> anims))
             {
                 if (anims.Count <= 0) return SingleAnimInfo.Null;
-            
+
                 if (anims.Count == 1) return anims[0];
+
+                if (GamePlayFacade.Instance != null)
+                {
+                    int index = GamePlayFacade.Instance.Random.NextInt(0, anims.Count);
+                    return anims[index];
+                }
+
+                return anims[0];
             }
 
             return SingleAnimInfo.Null;

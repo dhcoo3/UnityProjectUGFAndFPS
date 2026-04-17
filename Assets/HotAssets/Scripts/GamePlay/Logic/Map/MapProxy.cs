@@ -157,22 +157,34 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                     MapPlatformUnit mapPlatform = _platforms[pi];
                     if (!mapPlatform.IsStandingOn(rPos, bodyRadius)) continue;
 
+                    // 跳跃中（竖向速度 > 0）或从下往上碰撞时，不处理平台逻辑，让其自由穿过
+                    // 只有明确从上方落下时才与平台交互
+                    bool jumping = roleUnit.RoleBrian.VerticalVelocity > fix.Zero;
+                    bool fallingIntoplatform = roleUnit.RoleBrian.VerticalVelocity < fix.Zero;
+
+                    if (jumping)
+                    {
+                        // 跳跃中直接跳过平台处理，避免穿透和吸附
+                        continue;
+                    }
+
                     fix3 delta = mapPlatform.GetDeltaThisFrame();
 
-                    // 角色向上跳跃时（竖向速度 > 0），只携带水平位移，不强制吸附到平台表面，
-                    // 避免起跳瞬间被拉回导致高度无变化
-                    bool jumping = roleUnit.RoleBrian.VerticalVelocity > fix.Zero;
-                    roleUnit.Behaviour.Position = new fix3(
-                        rPos.x + delta.x,
-                        jumping ? rPos.y + delta.y : mapPlatform.SurfaceY + roleUnit.BodyRadius,
-                        rPos.z + delta.z
-                    );
-
-                    if (!jumping)
+                    if (fallingIntoplatform && rPos.y > mapPlatform.SurfaceY + roleUnit.BodyRadius)
                     {
-                        // 仅落地/站立时才写入 IsGrounded 和重置跳跃状态
+                        // 从上往下落地时才吸附到平台表面
+                        roleUnit.Behaviour.Position = new fix3(
+                            rPos.x + delta.x,
+                            mapPlatform.SurfaceY + roleUnit.BodyRadius,
+                            rPos.z + delta.z
+                        );
                         roleUnit.RoleState.IsGrounded = true;
                         roleUnit.RoleBrian.OnStandOnPlatform();
+                    }
+                    else
+                    {
+                        // 其他情况（如平台自身移动）：跟随平台整体移动
+                        roleUnit.Behaviour.Position = new fix3(rPos.x + delta.x, rPos.y + delta.y, rPos.z + delta.z);
                     }
                     break; // 每角色同一帧只处理一块平台
                 }

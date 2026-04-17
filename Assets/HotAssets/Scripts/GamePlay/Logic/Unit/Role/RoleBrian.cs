@@ -103,7 +103,11 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             {
                 return;
             }
-            
+
+            // 每帧开始前重置落地状态，防止上一帧的接地状态残留
+            // UnitMove 会在本帧通过 OR 操作重新设置 IsGrounded，确保状态准确
+            _roleUnit.RoleState.IsGrounded = false;
+
             //如果角色没死，做这些事情：
 
             //无敌时间减少
@@ -255,7 +259,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             // 地形落地 或 上帧站在移动平台上，均重置竖向速度为探测值
             if ((unitMove.IsGrounded || _roleUnit.RoleState.IsGrounded) && _verticalVelocity < fix.Zero)
             {
-                _verticalVelocity = (fix)(-0.5f);
+                // 探测值应该足够大以穿透一个网格，防止边缘掉落时失去落地状态
+                _verticalVelocity = (fix)(-2.0f);
                 _roleUnit.RoleState.IsOnWall = false;
                 // 落地时重置二段跳计数
                 _roleUnit.RoleState.JumpCount = 0;
@@ -402,7 +407,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Unit.Role
             // 只有在下落时才重置为探测值，跳跃时保持原有速度
             if (_verticalVelocity < fix.Zero)
             {
-                _verticalVelocity = (fix)(-0.5f);
+                // 探测值应该足够大以穿透一个网格，防止边缘掉落
+                _verticalVelocity = (fix)(-2.0f);
             }
             _roleUnit.RoleState.JumpCount = 0;
         }

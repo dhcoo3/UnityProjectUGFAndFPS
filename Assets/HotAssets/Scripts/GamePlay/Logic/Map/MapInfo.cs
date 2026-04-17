@@ -21,22 +21,32 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         public fix2 gridSize{get;}
 
         ///<summary>
+        ///地图原点（左下角），单位：米
+        ///</summary>
+        public fix2 origin{get;}
+
+        ///<summary>
         ///获得地图的边界，单位：米
         ///</summary>
         public Rect border{get;}
 
 
-        public MapInfo(GridInfo[,] map, fix2 gridSize){
+        public MapInfo(GridInfo[,] map, fix2 gridSize) : this(map, gridSize, fix2.zero)
+        {
+        }
+
+        public MapInfo(GridInfo[,] map, fix2 gridSize, fix2 origin){
             this.grid = map;
             this.gridSize = new fix2(
                 fixMath.max(0.1f, gridSize.x),    //最小0.1米
                 fixMath.max(0.1f, gridSize.y)
             );
+            this.origin = origin;
             this.border = new Rect(
-                -gridSize.x / 2.00f,
-                -gridSize.y / 2.00f,
-                gridSize.x * MapWidth(),
-                gridSize.y * MapHeight()
+                origin.x,
+                origin.y,
+                this.gridSize.x * MapWidth(),
+                this.gridSize.y * MapHeight()
             );
         }
 
@@ -76,10 +86,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
         ///</summary>
         public int2 GetGridPosByMeter(fix x, fix y){
             return new int2(
-                //fixMath.floorToInt((x + gridSize.x / 2.00f) / gridSize.x),
-                //fixMath.floorToInt((z + gridSize.y / 2.00f) / gridSize.y)
-                fixMath.roundToInt(x / gridSize.x),
-                fixMath.roundToInt(y / gridSize.y)
+                fixMath.floorToInt((x - origin.x) / gridSize.x),
+                fixMath.floorToInt((y - origin.y) / gridSize.y)
             );
         }
 
@@ -117,8 +125,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                 for (int j = lt.y; j <= rb.y; j++){
                     if (CanGridPasses(i, j, moveType, false) == false){
                         collisionRects.Add(new Rect(
-                            (i - 0.5f) * gridSize.x,
-                            (j - 0.5f) * gridSize.y,
+                            origin.x + i * gridSize.x,
+                            origin.y + j * gridSize.y,
                             gridSize.x,
                             gridSize.y
                         ));
@@ -147,8 +155,8 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
                 for (var j = range.y; j < range.y + range.height; j++){
                     //if (i >= 0 && i < MapWidth() && j >= 0 && j < MapHeight() && gridInfo[i, j].characterCanPass == true){
                     fix3 ranPos = new fix3(
-                        i * gridSize.x, 
-                        j * gridSize.y,
+                        origin.x + (i + (fix)0.5f) * gridSize.x, 
+                        origin.y + (j + (fix)0.5f) * gridSize.y,
                         0
                     );
                     if (CanUnitPlacedHere(ranPos, chaRadius, moveType) == true) {  
@@ -172,12 +180,16 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
             if (dir == 0) return pivot.x;
             int dv = dir > 0 ? 1 : -1;
             fix bestX = pivot.x + dir;
-            int seekWidth = fixMath.ceilToInt((fixMath.abs(dir) + radius) / gridSize.x + 2);
+            // 增加搜索范围系数（×1.5）以处理高速移动情况，防止穿透
+            int seekWidth = fixMath.ceilToInt((fixMath.abs(dir) + radius) / gridSize.x * (fix)1.5f + 3);
             int2 gPos = GetGridPosByMeter(pivot.x, pivot.y);
             for (var i = 0; i < seekWidth; i++){
                 int cgX = gPos.x + dv * i;
                 if (this.CanGridPasses(cgX, gPos.y, moveType, ignoreBorder) == false){
-                    fix wallX = (cgX - dv * 0.5f) * gridSize.x - dv * radius;
+                    fix cellMinX = origin.x + cgX * gridSize.x;
+                    fix wallX = dv > 0
+                        ? cellMinX - radius
+                        : cellMinX + gridSize.x + radius;
                     if (dv > 0){
                         return fixMath.min(wallX, bestX);
                     }else{
@@ -201,12 +213,16 @@ namespace HotAssets.Scripts.GamePlay.Logic.Map
             if (dir == 0) return pivot.y;
             int dv = dir > 0 ? 1 : -1;
             fix bestY = pivot.y + dir;
-            int seekHeight = fixMath.ceilToInt((fixMath.abs(dir) + radius) / gridSize.y + 2);
+            // 增加搜索范围系数（×1.5）以处理高速移动情况，防止穿透
+            int seekHeight = fixMath.ceilToInt((fixMath.abs(dir) + radius) / gridSize.y * (fix)1.5f + 3);
             int2 gPos = GetGridPosByMeter(pivot.x, pivot.y);
             for (var i = 0; i < seekHeight; i++){
                 int cgY = gPos.y + dv * i;
                 if (this.CanGridPasses(gPos.x, cgY, moveType, ignoreBorder) == false){
-                    fix wallZ = (cgY - dv * 0.5f) * gridSize.y - dv * radius;
+                    fix cellMinY = origin.y + cgY * gridSize.y;
+                    fix wallZ = dv > 0
+                        ? cellMinY - radius
+                        : cellMinY + gridSize.y + radius;
                     if (dv > 0){
                         return fixMath.min(wallZ, bestY);
                     }else{

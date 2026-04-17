@@ -48,10 +48,21 @@ namespace HotAssets.Scripts.GamePlay
 
         public void End()
         {
-            _inputCollector.Clear();
-            _inputCollector = null;
-            GameProxyManger.Instance.Clear();
-            GameRenderManager.Instance.Clear();
+            if (_inputCollector != null)
+            {
+                _inputCollector.Clear();
+                _inputCollector = null;
+            }
+
+            if (GameProxyManger.Instance != null)
+            {
+                GameProxyManger.Instance.Clear();
+            }
+
+            if (GameRenderManager.Instance != null)
+            {
+                GameRenderManager.Instance.Clear();
+            }
 
             GameExtension.UpdateActions.Remove(Update);
         }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <UnityGameFramework>
   <ResourceCollection>
     <Resources>
@@ -27,10 +27,16 @@
       <Resource Name="HotAssets/DataTable/ui_tbreddot" FileSystem="DataTable" LoadType="4" Packed="False" />
       <Resource Name="HotAssets/Entity/Core" LoadType="0" Packed="False" />
       <Resource Name="HotAssets/Scene/Home" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/Scene/Login" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/UI/Prefabs/Home" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/UI/Prefabs/FightMainChapter" LoadType="0" Packed="False" />
       <Resource Name="HotAssets/UI/Prefabs/Login" LoadType="0" Packed="False" />
       <Resource Name="HotAssets/UI/Sprites/Login" LoadType="0" Packed="False" />
       <Resource Name="HotfixDlls" LoadType="0" Packed="False" />
       <Resource Name="Setting" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/Scene/ChapterO1_MapO1" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/Entity/Monster/1001" LoadType="0" Packed="False" />
+      <Resource Name="HotAssets/Entity/Monster/1002" LoadType="0" Packed="False" />
     </Resources>
     <Assets>
       <Asset Guid="034d0bc93db4416428b1ada778762aff" ResourceName="HotAssets/DataTable/ui_tbreddot" />
@@ -43,6 +49,9 @@
       <Asset Guid="189a34d65610b2c4fb57068005d985d1" ResourceName="HotAssets/DataTable/anim_tbanimdef" />
       <Asset Guid="1b939be2f1784b141845be568ee1557d" ResourceName="HotAssets/UI/Sprites/Login" />
       <Asset Guid="1d41bf82825ea774aa43572c711e96ad" ResourceName="HotAssets/DataTable/map_tbmapdata" />
+      <Asset Guid="CSwes3/4VHhxaH47rMXHpkCxsP+QDSEqG7DZ28lXvlL4Y66IlQXhfQA=" ResourceName="HotAssets/Scene/Login" />
+      <Asset Guid="f6a88d9e7a4b4c1d8e0f1a2b3c4d5e66" ResourceName="HotAssets/UI/Prefabs/Home" />
+      <Asset Guid="c3f55d9e7a4b4c1d8e0f1a2b3c4d5e62" ResourceName="HotAssets/UI/Prefabs/FightMainChapter" />
       <Asset Guid="45d37d27c6bf1724c9ad5a3878592e47" ResourceName="Atlas" />
       <Asset Guid="4a2de196c1dca0940b6fa897988e5090" ResourceName="HotAssets/UI/Sprites/Login" />
       <Asset Guid="6be38d7fc85a442489bc513d73291793" ResourceName="HotfixDlls" />
@@ -63,8 +72,13 @@
       <Asset Guid="ed8dd17d6f21a84459b4f37082db8952" ResourceName="HotAssets/DataTable/skill_tbaoedef" />
       <Asset Guid="eddc6723c2d5a2c4a9607a5667694861" ResourceName="HotAssets/DataTable/core_tbsoundgrouptable" />
       <Asset Guid="eea39d01f65faa346835b2c71d9009cb" ResourceName="HotAssets/DataTable/entity_tbmonster" />
+      <Asset Guid="D3xL4H6vVnhFaUQMZPfeW6/ujUDSxx3oAjwi6rItnL1KvPImI78/Q3E=" ResourceName="HotAssets/DataTable/spawner_tbmonsterspawner" />
       <Asset Guid="f2903f426b62f854f9e265b839325875" ResourceName="HotAssets/DataTable/ui_tbgamemodule" />
       <Asset Guid="f5ca4fb1fb5b0cd46ae1237e4943a338" ResourceName="HotAssets/DataTable/core_tbentitygrouptable" />
+      <Asset Guid="f8bfb27db28a4f69a1dec8e804ea2245" ResourceName="HotAssets/Scene/ChapterO1_MapO1" />
+      <Asset Guid="eb66c92df21e4c8098f06d23b2fc5bb3" ResourceName="HotAssets/Scene/ChapterO1_MapO1" />
+      <Asset Guid="1f228cf18b6743af95f83b04f1dadd43" ResourceName="HotAssets/Entity/Monster/1001" />
+      <Asset Guid="bf247ad17b6c4d529282d28510275f59" ResourceName="HotAssets/Entity/Monster/1002" />
     </Assets>
   </ResourceCollection>
 </UnityGameFramework>
